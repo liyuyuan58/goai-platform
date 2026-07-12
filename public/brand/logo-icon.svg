@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="GoAI icon">
+  <rect width="128" height="128" rx="30" fill="#2563EB"/>
+  <path d="M32 66c0-19 14-34 34-34 10 0 18 3 25 9l-10 11c-4-4-9-6-15-6-11 0-19 9-19 20 0 12 8 20 20 20 6 0 11-2 15-5v-8H65V60h32v28c-7 7-17 12-31 12-20 0-34-15-34-34Z" fill="#FFFFFF"/>
+  <path d="M96 32h10v64H96z" fill="#00C2FF"/>
+</svg>

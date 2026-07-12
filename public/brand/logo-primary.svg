@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="64" viewBox="0 0 220 64" role="img" aria-label="GoAI logo">
+  <rect width="48" height="48" x="8" y="8" rx="14" fill="#2563EB"/>
+  <path d="M19 33c0-8 6-14 15-14 5 0 8 1 11 4l-4 5c-2-2-4-3-7-3-5 0-8 4-8 8 0 5 3 9 8 9 3 0 5-1 7-2v-4h-8v-6h15v13c-3 3-8 5-14 5-9 0-15-6-15-15Z" fill="#FFFFFF"/>
+  <path d="M47 18h4v28h-4z" fill="#00C2FF"/>
+  <text x="70" y="40" fill="#0B132B" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">GoAI</text>
+</svg>
