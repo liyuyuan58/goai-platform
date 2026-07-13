@@ -8,27 +8,24 @@ type SiteFooterProps = {
 
 const footerGroups = [
   {
-    title: "Product",
-    links: [
-      { label: "Solutions", href: "/solutions" },
-      { label: "AI Tools", href: "/tools" },
-      { label: "Playbooks", href: "/playbooks" },
-      { label: "Regions", href: "/regions" }
-    ]
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Resources", href: "/resources" },
-      { label: "Blog", href: "/blog" },
-      { label: "Newsletter", href: "#newsletter" }
-    ]
-  },
-  {
-    title: "Company",
+    title: "GoAI",
     links: [
       { label: "About", href: "/about" },
-      { label: "Partnership", href: "/about#partnership" }
+      { label: "Resources", href: "/resources" }
+    ]
+  },
+  {
+    title: "Content",
+    links: [
+      { label: "Blog", href: "/blog" },
+      { label: "Contact", href: "/about#contact" }
+    ]
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy Policy", href: "/about#privacy-policy" },
+      { label: "Terms of Service", href: "/about#terms-of-service" }
     ]
   }
 ];

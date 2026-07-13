@@ -58,14 +58,46 @@ const featuredSolutions = [
 ];
 
 const featuredTools = [
-  { name: "Market Research AI", category: "Research" },
-  { name: "Lead List Builder", category: "Sales" },
-  { name: "Localization Assistant", category: "Content" },
-  { name: "Email Sequence Writer", category: "Outbound" },
-  { name: "Competitor Scanner", category: "Strategy" },
-  { name: "Partner Finder", category: "Channels" },
-  { name: "SEO Keyword Mapper", category: "SEO" },
-  { name: "Workflow Automator", category: "Ops" }
+  {
+    name: "ChatGPT",
+    category: "AI Chatbots",
+    description: "Research, writing and workflow support for global business teams."
+  },
+  {
+    name: "Claude",
+    category: "AI Chatbots",
+    description: "Long-form analysis and structured planning for business documents."
+  },
+  {
+    name: "Perplexity",
+    category: "AI Business",
+    description: "Source-backed research for markets, competitors and demand signals."
+  },
+  {
+    name: "Cursor",
+    category: "AI Coding",
+    description: "AI-assisted coding for teams building digital products and tools."
+  },
+  {
+    name: "Zapier",
+    category: "AI Automation",
+    description: "Connect apps and automate repeatable sales, marketing and ops work."
+  },
+  {
+    name: "Canva",
+    category: "AI Design",
+    description: "Create branded marketing assets, presentations and visual content."
+  },
+  {
+    name: "Runway",
+    category: "AI Video",
+    description: "Produce and edit video assets for campaigns and product storytelling."
+  },
+  {
+    name: "Notion AI",
+    category: "AI Productivity",
+    description: "Organize knowledge, playbooks and team documents with AI support."
+  }
 ];
 
 const regions = [
@@ -334,10 +366,7 @@ function FeaturedTools({ prefix }: { prefix: string }) {
                 <span className="text-xs font-semibold text-growth">AI</span>
               </div>
               <h3 className="text-lg font-semibold text-primary">{tool.name}</h3>
-              <p className="mt-3 text-sm leading-6 text-secondary">
-                Placeholder profile for a practical AI workflow tool used in global
-                growth.
-              </p>
+              <p className="mt-3 text-sm leading-6 text-secondary">{tool.description}</p>
               <div className="mt-5 h-1.5 rounded-full bg-border">
                 <div
                   className="h-1.5 rounded-full bg-brand"
@@ -434,8 +463,8 @@ export function NewsletterCta() {
               Get practical AI and global growth ideas in your inbox.
             </h2>
             <p className="mt-4 text-base leading-7 text-white/70">
-              Placeholder newsletter CTA for future lead capture. No backend or email
-              provider is connected yet.
+              Practical updates on AI tools, global markets, playbooks and growth
+              resources for teams building international business.
             </p>
           </div>
           <NewsletterForm />

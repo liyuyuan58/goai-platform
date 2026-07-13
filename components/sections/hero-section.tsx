@@ -16,18 +16,18 @@ export function HeroSection({ locale }: HeroSectionProps) {
             AI for Global Business
           </p>
           <h1 className="max-w-4xl text-[2.85rem] font-semibold leading-[1.04] tracking-normal text-primary sm:text-6xl lg:text-7xl">
-            Build Your Global Business with AI
+            GoAI Helps Every Business Go Global with AI
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-secondary sm:mt-6 sm:text-xl sm:leading-8">
-            Discover AI tools, proven playbooks and global market insights to help your
-            business find customers, enter new markets and grow internationally.
+            Discover AI tools, global market intelligence, business playbooks and growth
+            resources in one platform.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <ButtonLink className="min-h-12 px-6 shadow-soft" href={`${prefix}/solutions`}>
-              Explore Solutions
+            <ButtonLink className="min-h-12 px-6 shadow-soft" href={`${prefix}/tools`}>
+              Explore AI Tools
             </ButtonLink>
-            <ButtonLink className="min-h-12 px-6" href={`${prefix}/tools`} variant="secondary">
-              Discover AI Tools
+            <ButtonLink className="min-h-12 px-6" href={`${prefix}/regions`} variant="secondary">
+              Explore Global Markets
             </ButtonLink>
           </div>
           <p className="mt-7 max-w-xl border-l-2 border-brand/20 pl-4 text-sm leading-6 text-secondary">

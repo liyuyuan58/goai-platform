@@ -27,9 +27,9 @@ export default async function AboutPage({ params }: PageProps) {
 
   const sections = [
     {
-      title: "What is GoAI",
+      title: "About GoAI",
       description:
-        "GoAI is an AI Native Global Business Platform for teams that want practical tools, playbooks and market resources in one place."
+        "GoAI is one platform for AI tools, global market intelligence, business playbooks and growth resources."
     },
     {
       title: "Mission",
@@ -55,11 +55,11 @@ export default async function AboutPage({ params }: PageProps) {
           <div className="container-page max-w-4xl">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">About</p>
             <h1 className="mt-4 text-4xl font-semibold leading-tight text-primary sm:text-5xl lg:text-6xl">
-              Go Global with AI
+              About GoAI
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-7 text-secondary sm:text-xl sm:leading-8">
-              GoAI helps businesses find the tools, methods, playbooks and global
-              resources needed to build international business.
+              GoAI helps every business go global with AI by bringing tools, market
+              intelligence, playbooks and growth resources into one platform.
             </p>
           </div>
         </section>
@@ -76,22 +76,44 @@ export default async function AboutPage({ params }: PageProps) {
             ))}
           </div>
         </section>
-        <section className="border-b border-border py-16 sm:py-20" id="partnership">
+        <section className="border-b border-border py-16 sm:py-20" id="contact">
           <div className="container-page rounded-[2rem] border border-border bg-surface p-8 shadow-sm sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
-              Contact / Partnership
+              Contact
             </p>
             <h2 className="mt-3 text-3xl font-semibold text-primary">
-              Build global AI resources with GoAI.
+              Connect with GoAI.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-secondary">
-              Partnership and contact workflows will be connected before public launch.
-              For now, this page defines the business intent and CTA surface.
+              Reach GoAI through email, LinkedIn, X or GitHub for product updates,
+              partnerships and community conversations.
             </p>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { label: "Email", value: "hello@goai.ai" },
+                { label: "LinkedIn", value: "GoAI" },
+                { label: "GitHub", value: "goai-platform" },
+                { label: "X", value: "@goai" }
+              ].map((item) => (
+                <div
+                  className="rounded-2xl border border-border bg-background p-4"
+                  key={item.label}
+                >
+                  <p className="text-sm font-semibold text-primary">{item.label}</p>
+                  <p className="mt-2 text-sm text-secondary">{item.value}</p>
+                </div>
+              ))}
+            </div>
             <div className="mt-7">
               <ButtonLink href={`/${locale}/resources`}>Explore resources</ButtonLink>
             </div>
           </div>
+        </section>
+        <section className="sr-only" id="privacy-policy">
+          Privacy Policy
+        </section>
+        <section className="sr-only" id="terms-of-service">
+          Terms of Service
         </section>
         <NewsletterCta />
       </main>
