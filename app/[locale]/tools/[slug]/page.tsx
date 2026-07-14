@@ -34,9 +34,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: `${siteUrl}/${locale}/tools/${tool.slug}`,
-      type: "article"
+      type: "article",
+      images: [{ url: `${siteUrl}${tool.logo}`, width: 64, height: 64, alt: tool.logoAlt }]
     },
-    twitter: { card: "summary_large_image", title, description }
+    twitter: { card: "summary_large_image", title, description, images: [`${siteUrl}${tool.logo}`] }
   };
 }
 
@@ -54,8 +55,11 @@ export default async function ToolDetailPage({ params }: PageProps) {
     "@type": "SoftwareApplication",
     name: tool.name,
     applicationCategory: tool.category,
-    description: tool.description,
+    description: tool.overview,
+    image: `${siteUrl}${tool.logo}`,
     url: tool.website,
+    operatingSystem: tool.platform.join(", "),
+    featureList: tool.features,
     offers: {
       "@type": "Offer",
       price: tool.pricing
@@ -72,7 +76,7 @@ export default async function ToolDetailPage({ params }: PageProps) {
     <>
       <SiteHeader locale={locale} />
       <main>
-        <section className="border-b border-border py-14 sm:py-18 lg:py-20">
+        <section className="border-b border-border py-14 sm:py-20 lg:py-24">
           <div className="container-page">
             <Link
               className="focus-ring inline-flex rounded-md text-sm font-semibold text-brand"
@@ -80,7 +84,7 @@ export default async function ToolDetailPage({ params }: PageProps) {
             >
               Back to AI Tools
             </Link>
-            <div className="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+            <div className="mt-8 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
               <div>
                 <ToolLogo size="lg" tool={tool} />
                 <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-brand">
@@ -90,14 +94,15 @@ export default async function ToolDetailPage({ params }: PageProps) {
                   {tool.name}
                 </h1>
                 <p className="mt-5 max-w-3xl text-base leading-7 text-secondary sm:text-xl sm:leading-8">
-                  {tool.description}
+                  {tool.shortDescription}
                 </p>
               </div>
               <aside className="rounded-3xl border border-border bg-surface p-6 shadow-sm">
-                <div className="grid gap-4 text-sm">
-                  <InfoRow label="Website" value={tool.website} />
+                <div className="grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-1">
                   <InfoRow label="Pricing" value={tool.pricing} />
-                  <InfoRow label="GoAI Rating" value={`${tool.rating.toFixed(1)}/5`} />
+                  <InfoRow label="Rating" value={`${tool.rating.toFixed(1)}/5`} />
+                  <InfoRow label="Platform" value={tool.platform.join(", ")} />
+                  <InfoRow label="Last Updated" value={tool.lastUpdated} />
                 </div>
                 <a
                   className="focus-ring mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
@@ -113,6 +118,32 @@ export default async function ToolDetailPage({ params }: PageProps) {
         </section>
 
         <section className="border-b border-border bg-surface/45 py-14 sm:py-16">
+          <div className="container-page grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+            <article className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+                Overview
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-primary">What is {tool.name}?</h2>
+              <p className="mt-4 text-base leading-7 text-secondary">{tool.overview}</p>
+            </article>
+            <article className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+                Official Website
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-primary">{tool.website}</h2>
+              <a
+                className="focus-ring mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-primary transition hover:border-brand/30 hover:text-brand"
+                href={tool.website}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Open official site
+              </a>
+            </article>
+          </div>
+        </section>
+
+        <section className="border-b border-border py-14 sm:py-16">
           <div className="container-page grid gap-4 lg:grid-cols-3">
             <DetailPanel title="Features" items={tool.features} />
             <DetailPanel title="Pros" items={tool.pros} />
@@ -120,9 +151,26 @@ export default async function ToolDetailPage({ params }: PageProps) {
           </div>
         </section>
 
+        <section className="border-b border-border bg-surface/45 py-14 sm:py-16">
+          <div className="container-page grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+            <DetailPanel title="Best For" items={tool.bestFor} />
+            <article className="rounded-3xl border border-border bg-surface p-6 shadow-sm">
+              <h2 className="text-2xl font-semibold text-primary">Product Details</h2>
+              <div className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+                <InfoRow label="Pricing" value={tool.pricing} />
+                <InfoRow label="Platform" value={tool.platform.join(", ")} />
+                <InfoRow label="Languages" value={tool.languages.join(", ")} />
+                <InfoRow label="API" value={tool.api} />
+                <InfoRow label="Category" value={tool.category} />
+                <InfoRow label="Last Updated" value={tool.lastUpdated} />
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section className="border-b border-border py-14 sm:py-16">
           <div className="container-page">
-            <div className="max-w-3xl rounded-3xl border border-border bg-surface p-7 shadow-sm sm:p-8">
+            <div className="max-w-4xl rounded-3xl border border-border bg-surface p-7 shadow-sm sm:p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
                 GoAI Review
               </p>
@@ -137,9 +185,9 @@ export default async function ToolDetailPage({ params }: PageProps) {
             <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
-                  Related Tools
+                  Alternatives
                 </p>
-                <h2 className="mt-3 text-3xl font-semibold text-primary">Explore next</h2>
+                <h2 className="mt-3 text-3xl font-semibold text-primary">Similar AI tools</h2>
               </div>
               <Link
                 className="focus-ring rounded-md text-sm font-semibold text-brand"
@@ -148,7 +196,7 @@ export default async function ToolDetailPage({ params }: PageProps) {
                 View all tools
               </Link>
             </div>
-            <div className="grid auto-rows-fr gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-4">
               {relatedTools.map((relatedTool) => (
                 <ToolCard key={relatedTool.slug} locale={locale} tool={relatedTool} />
               ))}

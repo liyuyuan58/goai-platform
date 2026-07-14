@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.3 - AI Tools Visual & Detail Polish
+
+- Replaced generated placeholder tool logos with official website brand icon assets stored under `public/brand/tools`.
+- Added official logo rendering through the reusable `ToolLogo` component.
+- Expanded AI Tools data model with overview, best fit, platform, languages, API, official website and last updated fields.
+- Added Gemini, Grok, Midjourney, Lovable, Bolt and Windsurf to the AI Tools directory.
+- Updated Tool Cards to use one consistent layout: logo, name, category, one-line description, pricing, rating and Visit Website.
+- Rebuilt Tool Detail pages around Overview, Key Features, Pros, Cons, Best For, Pricing, Platform, Languages, API, Official Website, Alternatives and Last Updated.
+- Improved Tool Detail metadata with canonical URL, Open Graph image, Twitter image and Schema.org fields.
+- Updated homepage Featured AI Tools to use the same official logo component and tool data source.
+
 ## Beta v0.2 - GOAI Sprint 1 DEV PACKAGE 001
 
 ### Homepage Official Version

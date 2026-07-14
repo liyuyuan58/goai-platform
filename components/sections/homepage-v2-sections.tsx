@@ -1,5 +1,7 @@
+import { ToolLogo } from "@/components/tools/tool-logo";
 import { ButtonLink } from "@/components/ui/button-link";
 import { NewsletterForm } from "@/components/ui/newsletter-form";
+import { aiTools } from "@/lib/ai-tools";
 import type { Locale } from "@/lib/i18n";
 import type { ReactNode } from "react";
 
@@ -57,47 +59,15 @@ const featuredSolutions = [
   }
 ];
 
-const featuredTools = [
-  {
-    name: "ChatGPT",
-    category: "AI Chatbots",
-    description: "Research, writing and workflow support for global business teams."
-  },
-  {
-    name: "Claude",
-    category: "AI Chatbots",
-    description: "Long-form analysis and structured planning for business documents."
-  },
-  {
-    name: "Perplexity",
-    category: "AI Business",
-    description: "Source-backed research for markets, competitors and demand signals."
-  },
-  {
-    name: "Cursor",
-    category: "AI Coding",
-    description: "AI-assisted coding for teams building digital products and tools."
-  },
-  {
-    name: "Zapier",
-    category: "AI Automation",
-    description: "Connect apps and automate repeatable sales, marketing and ops work."
-  },
-  {
-    name: "Canva",
-    category: "AI Design",
-    description: "Create branded marketing assets, presentations and visual content."
-  },
-  {
-    name: "Runway",
-    category: "AI Video",
-    description: "Produce and edit video assets for campaigns and product storytelling."
-  },
-  {
-    name: "Notion AI",
-    category: "AI Productivity",
-    description: "Organize knowledge, playbooks and team documents with AI support."
-  }
+const featuredToolSlugs = [
+  "chatgpt",
+  "claude",
+  "perplexity",
+  "cursor",
+  "zapier",
+  "canva",
+  "runway",
+  "notion-ai"
 ];
 
 const regions = [
@@ -341,6 +311,10 @@ function FeaturedSolutions({ prefix }: { prefix: string }) {
 }
 
 function FeaturedTools({ prefix }: { prefix: string }) {
+  const featuredTools = featuredToolSlugs
+    .map((slug) => aiTools.find((tool) => tool.slug === slug))
+    .filter((tool): tool is (typeof aiTools)[number] => Boolean(tool));
+
   return (
     <section className="border-b border-border bg-surface/45 py-16 sm:py-20">
       <div className="container-page">
@@ -350,29 +324,19 @@ function FeaturedTools({ prefix }: { prefix: string }) {
           title="Tools for research, customers and execution"
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredTools.map((tool, index) => (
+          {featuredTools.map((tool) => (
             <FeatureCard className="p-5" key={tool.name}>
-              <div className="mb-5 flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#3157D5,#12B76A)] text-sm font-bold text-white">
-                  {tool.name
-                    .split(" ")
-                    .slice(0, 2)
-                    .map((word) => word[0])
-                    .join("")}
-                </div>
+              <div className="mb-5 flex items-start justify-between gap-3">
+                <ToolLogo size="sm" tool={tool} />
                 <span className="rounded-full bg-background px-3 py-1 text-xs font-semibold text-secondary">
                   {tool.category}
                 </span>
-                <span className="text-xs font-semibold text-growth">AI</span>
               </div>
               <h3 className="text-lg font-semibold text-primary">{tool.name}</h3>
-              <p className="mt-3 text-sm leading-6 text-secondary">{tool.description}</p>
-              <div className="mt-5 h-1.5 rounded-full bg-border">
-                <div
-                  className="h-1.5 rounded-full bg-brand"
-                  style={{ width: `${42 + index * 6}%` }}
-                />
-              </div>
+              <p className="mt-3 text-sm leading-6 text-secondary">{tool.shortDescription}</p>
+              <span className="mt-5 text-sm font-semibold text-brand">
+                {tool.rating.toFixed(1)}/5
+              </span>
             </FeatureCard>
           ))}
         </div>

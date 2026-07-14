@@ -18,7 +18,12 @@ export function ToolCard({ locale, tool }: ToolCardProps) {
         </span>
       </div>
       <div className="mt-5 flex flex-1 flex-col">
-        <h2 className="text-xl font-semibold text-primary">{tool.name}</h2>
+        <Link
+          className="focus-ring rounded-md text-xl font-semibold leading-tight text-primary transition hover:text-brand"
+          href={`/${locale}/tools/${tool.slug}`}
+        >
+          {tool.name}
+        </Link>
         <p className="mt-3 flex-1 text-sm leading-6 text-secondary">{tool.shortDescription}</p>
         <div className="mt-5 grid gap-2 border-t border-border pt-4 text-sm">
           <div className="flex items-center justify-between gap-3">
@@ -30,12 +35,14 @@ export function ToolCard({ locale, tool }: ToolCardProps) {
             <span className="font-semibold text-brand">{tool.rating.toFixed(1)}/5</span>
           </div>
         </div>
-        <Link
-          className="focus-ring mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-primary transition hover:border-brand/30 hover:text-brand"
-          href={`/${locale}/tools/${tool.slug}`}
+        <a
+          className="focus-ring mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
+          href={tool.website}
+          rel="noreferrer"
+          target="_blank"
         >
-          View Details
-        </Link>
+          Visit Website
+        </a>
       </div>
     </article>
   );
