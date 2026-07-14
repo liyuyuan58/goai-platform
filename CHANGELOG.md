@@ -1,5 +1,13 @@
 # Changelog
 
+## Sprint 004 - Google Analytics 4
+
+- Added GA4 measurement ID `G-N41JNP1RTP` through `@next/third-parties/google`.
+- Loaded Google Analytics on public pages only.
+- Excluded `/admin`, `/en/admin`, `/zh/admin` and `/api/admin` paths from analytics.
+- Added client-side `page_view` events for App Router page transitions.
+- Added `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the environment example.
+
 ## Sprint 003 - SEO Domain Hotfix
 
 - Updated the production SEO domain to `https://goaihub.xyz`.

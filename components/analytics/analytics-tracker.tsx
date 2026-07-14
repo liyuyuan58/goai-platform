@@ -1,5 +1,6 @@
 "use client";
 
+import { isAdminAnalyticsPath } from "@/lib/analytics";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
@@ -7,7 +8,7 @@ export function AnalyticsTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.startsWith("/en/admin") || pathname.startsWith("/zh/admin")) {
+    if (isAdminAnalyticsPath(pathname)) {
       return;
     }
 
