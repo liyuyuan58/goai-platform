@@ -1,11 +1,12 @@
 import { ToolLogo } from "@/components/tools/tool-logo";
 import { ButtonLink } from "@/components/ui/button-link";
 import { NewsletterForm } from "@/components/ui/newsletter-form";
-import { aiTools } from "@/lib/ai-tools";
+import type { AiTool } from "@/lib/ai-tools";
 import type { Locale } from "@/lib/i18n";
 import type { ReactNode } from "react";
 
 type HomepageV2SectionsProps = {
+  featuredTools: AiTool[];
   locale: Locale;
 };
 
@@ -59,17 +60,6 @@ const featuredSolutions = [
   }
 ];
 
-const featuredToolSlugs = [
-  "chatgpt",
-  "claude",
-  "perplexity",
-  "cursor",
-  "zapier",
-  "canva",
-  "runway",
-  "notion-ai"
-];
-
 const regions = [
   {
     code: "NA",
@@ -120,7 +110,7 @@ const playbooks = [
   }
 ];
 
-export function HomepageV2Sections({ locale }: HomepageV2SectionsProps) {
+export function HomepageV2Sections({ featuredTools, locale }: HomepageV2SectionsProps) {
   const prefix = `/${locale}`;
 
   return (
@@ -129,7 +119,7 @@ export function HomepageV2Sections({ locale }: HomepageV2SectionsProps) {
       <HowItWorks />
       <BusinessGoals />
       <FeaturedSolutions prefix={prefix} />
-      <FeaturedTools prefix={prefix} />
+      <FeaturedTools featuredTools={featuredTools} prefix={prefix} />
       <RegionsPreview prefix={prefix} />
       <PlaybooksPreview prefix={prefix} />
       <NewsletterCta />
@@ -310,11 +300,7 @@ function FeaturedSolutions({ prefix }: { prefix: string }) {
   );
 }
 
-function FeaturedTools({ prefix }: { prefix: string }) {
-  const featuredTools = featuredToolSlugs
-    .map((slug) => aiTools.find((tool) => tool.slug === slug))
-    .filter((tool): tool is (typeof aiTools)[number] => Boolean(tool));
-
+function FeaturedTools({ featuredTools, prefix }: { featuredTools: AiTool[]; prefix: string }) {
   return (
     <section className="border-b border-border bg-surface/45 py-16 sm:py-20">
       <div className="container-page">

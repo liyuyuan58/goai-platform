@@ -2,7 +2,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ToolCard } from "@/components/tools/tool-card";
 import { ToolLogo } from "@/components/tools/tool-logo";
-import { aiTools, getAiToolBySlug, getRelatedAiTools } from "@/lib/ai-tools";
+import { getPublishedToolBySlug, getPublishedTools, getRelatedPublishedTools } from "@/lib/cms-store";
 import { locales, type Locale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
@@ -11,13 +11,16 @@ import { notFound } from "next/navigation";
 
 type PageProps = { params: Promise<{ locale: Locale; slug: string }> };
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) => aiTools.map((tool) => ({ locale, slug: tool.slug })));
+export const dynamic = "force-dynamic";
+
+export async function generateStaticParams() {
+  const tools = await getPublishedTools();
+  return locales.flatMap((locale) => tools.map((tool) => ({ locale, slug: tool.slug })));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const tool = getAiToolBySlug(slug);
+  const tool = await getPublishedToolBySlug(slug);
 
   if (!tool) {
     return { title: "AI Tool Not Found | GoAI" };
@@ -43,13 +46,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ToolDetailPage({ params }: PageProps) {
   const { locale, slug } = await params;
-  const tool = getAiToolBySlug(slug);
+  const tool = await getPublishedToolBySlug(slug);
 
   if (!tool) {
     notFound();
   }
 
-  const relatedTools = getRelatedAiTools(tool);
+  const relatedTools = await getRelatedPublishedTools(tool);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",

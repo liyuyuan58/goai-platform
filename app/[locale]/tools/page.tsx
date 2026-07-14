@@ -1,7 +1,7 @@
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ToolsDirectory } from "@/components/tools/tools-directory";
-import { aiToolCategories, aiTools } from "@/lib/ai-tools";
+import { getCmsData } from "@/lib/cms-store";
 import type { Locale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
@@ -10,6 +10,8 @@ type PageProps = { params: Promise<{ locale: Locale }> };
 
 const title = "AI Tools | GoAI";
 const description = "Discover the world's best AI tools for global business growth.";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -30,12 +32,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ToolsPage({ params }: PageProps) {
   const { locale } = await params;
+  const cmsData = await getCmsData();
+  const tools = cmsData.tools.filter((tool) => tool.isPublished && !tool.isHidden);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "GoAI AI Tools Directory",
     description,
-    itemListElement: aiTools.map((tool, index) => ({
+    itemListElement: tools.map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
       url: `${siteUrl}/${locale}/tools/${tool.slug}`,
@@ -60,7 +64,7 @@ export default async function ToolsPage({ params }: PageProps) {
             </p>
           </div>
         </section>
-        <ToolsDirectory categories={aiToolCategories} locale={locale} tools={aiTools} />
+        <ToolsDirectory categories={cmsData.categories} locale={locale} tools={tools} />
       </main>
       <SiteFooter locale={locale} />
       <script

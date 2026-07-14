@@ -1,6 +1,7 @@
 export type AiToolCategory = {
   slug: string;
   label: string;
+  sortOrder?: number;
 };
 
 export type AiTool = {
@@ -22,6 +23,18 @@ export type AiTool = {
   platform: string[];
   languages: string[];
   api: string;
+  subCategory?: string;
+  freeTrial?: string;
+  alternatives?: string[];
+  featured?: boolean;
+  trending?: boolean;
+  editorsPick?: boolean;
+  popular?: boolean;
+  newest?: boolean;
+  isPublished?: boolean;
+  isHidden?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
   lastUpdated: string;
   review: string;
 };
@@ -502,6 +515,11 @@ export function filterAiTools(tools: AiTool[], query: string, categorySlug: stri
       tool.category,
       tool.shortDescription,
       tool.pricing,
+      tool.subCategory ?? "",
+      tool.freeTrial ?? "",
+      tool.api,
+      ...tool.platform,
+      ...tool.languages,
       tool.overview,
       ...tool.bestFor
     ]

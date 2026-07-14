@@ -1,5 +1,17 @@
 # Changelog
 
+## Sprint 001 - GoAI Admin CMS
+
+- Added `/[locale]/admin` Admin CMS for first-stage tool content management.
+- Added Tool Management for creating, editing, deleting, hiding and publishing tools.
+- Added full Tool fields for category, sub category, logo, website, pricing, free trial, overview, features, pros, cons, best for, platform, languages, API, alternatives, rating, homepage flags, SEO and last updated.
+- Added browser-side logo cropping and scaling to 64 x 64 PNG before upload.
+- Added CMS API routes for reading and publishing CMS content.
+- Added local JSON CMS store with fallback to the existing tool catalog.
+- Connected homepage Featured Tools, Tool List, Tool Detail and Sitemap to published CMS data.
+- Added Category Management for creating, editing, deleting and sorting categories.
+- Added homepage controls through Featured, Trending, Newest, Editor's Pick and Popular flags.
+
 ## v0.3 - AI Tools Visual & Detail Polish
 
 - Replaced generated placeholder tool logos with official website brand icon assets stored under `public/brand/tools`.
