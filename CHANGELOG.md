@@ -1,5 +1,15 @@
 # Changelog
 
+## Sprint 005 - Authentication
+
+- Added Auth.js / NextAuth Google Login with JWT sessions.
+- Added a GoAI-styled login modal for Login and Sign Up actions.
+- Added authenticated Header state with avatar menu, My Account, Subscription, Settings and Logout.
+- Added protected routes for Dashboard, Workspace, Account and Settings.
+- Added middleware redirects for unauthenticated access to protected routes.
+- Added local user store fields for Google users: id, email, name, avatar, provider, role, plan, created_at and updated_at.
+- Added authentication environment variables for Google OAuth and Auth.js.
+
 ## Sprint 004 - Google Analytics 4
 
 - Added GA4 measurement ID `G-N41JNP1RTP` through `@next/third-parties/google`.

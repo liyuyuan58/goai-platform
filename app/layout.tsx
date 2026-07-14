@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
 import { GoogleAnalyticsTracker } from "@/components/analytics/google-analytics";
+import { AuthProvider } from "@/components/auth/auth-provider";
 import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -58,13 +59,15 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="en">
       <body>
-        {children}
-        <AnalyticsTracker />
-        <GoogleAnalyticsTracker />
-        <script
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          type="application/ld+json"
-        />
+        <AuthProvider>
+          {children}
+          <AnalyticsTracker />
+          <GoogleAnalyticsTracker />
+          <script
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            type="application/ld+json"
+          />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,10 +1,12 @@
 "use client";
 
-import { ButtonLink } from "@/components/ui/button-link";
+import { LoginModal } from "@/components/auth/login-modal";
 import type { Locale } from "@/lib/i18n";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 type SiteHeaderProps = {
   locale: Locale;
@@ -21,9 +23,34 @@ const navItems = [
 ];
 
 export function SiteHeader({ locale }: SiteHeaderProps) {
+  return (
+    <Suspense fallback={null}>
+      <HeaderContent locale={locale} />
+    </Suspense>
+  );
+}
+
+function HeaderContent({ locale }: SiteHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
+  const isAuthenticated = status === "authenticated";
+  const user = session?.user;
 
   const localizedHref = (href: string) => `/${locale}${href}`;
+
+  useEffect(() => {
+    if (searchParams.get("login") === "1" && !isAuthenticated) {
+      setIsLoginOpen(true);
+    }
+  }, [isAuthenticated, searchParams]);
+
+  const openLogin = () => {
+    setIsOpen(false);
+    setIsLoginOpen(true);
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-white/90 shadow-[0_1px_0_rgba(15,23,42,0.02)] backdrop-blur">
@@ -62,7 +89,52 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
           >
             EN
           </Link>
-          <ButtonLink href={localizedHref("/solutions")}>Explore Solutions</ButtonLink>
+          {isAuthenticated ? (
+            <div className="relative">
+              <button
+                aria-expanded={isAccountOpen}
+                className="focus-ring flex items-center gap-2 rounded-full border border-border bg-surface py-1.5 pl-1.5 pr-3 text-sm font-semibold text-primary shadow-sm transition hover:border-brand/30"
+                onClick={() => setIsAccountOpen((current) => !current)}
+                type="button"
+              >
+                {user?.image ? (
+                  <img
+                    alt={user.name ?? "GoAI user"}
+                    className="h-8 w-8 rounded-full object-cover"
+                    src={user.image}
+                  />
+                ) : (
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
+                    {user?.name?.charAt(0) ?? "G"}
+                  </span>
+                )}
+                <span aria-hidden="true">⌄</span>
+              </button>
+              {isAccountOpen ? (
+                <AccountMenu
+                  locale={locale}
+                  onClose={() => setIsAccountOpen(false)}
+                />
+              ) : null}
+            </div>
+          ) : (
+            <>
+              <button
+                className="focus-ring rounded-md text-sm font-semibold text-secondary transition hover:text-primary"
+                onClick={openLogin}
+                type="button"
+              >
+                Login
+              </button>
+              <button
+                className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
+                onClick={openLogin}
+                type="button"
+              >
+                Sign Up
+              </button>
+            </>
+          )}
         </div>
 
         <button
@@ -105,13 +177,90 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
               >
                 EN
               </Link>
-              <ButtonLink className="w-full" href={localizedHref("/solutions")}>
-                Explore Solutions
-              </ButtonLink>
+              {isAuthenticated ? (
+                <div className="grid gap-2">
+                  <Link
+                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
+                    href={localizedHref("/account")}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    My Account
+                  </Link>
+                  <Link
+                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
+                    href={localizedHref("/account/subscription")}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Subscription
+                  </Link>
+                  <Link
+                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
+                    href={localizedHref("/settings")}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary"
+                    onClick={() => void signOut({ callbackUrl: `/${locale}` })}
+                    type="button"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="grid gap-2">
+                  <button
+                    className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary"
+                    onClick={openLogin}
+                    type="button"
+                  >
+                    Login
+                  </button>
+                  <button
+                    className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
+                    onClick={openLogin}
+                    type="button"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </div>
           </nav>
         </div>
       ) : null}
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </header>
+  );
+}
+
+function AccountMenu({ locale, onClose }: { locale: Locale; onClose: () => void }) {
+  const items = [
+    { label: "My Account", href: `/${locale}/account` },
+    { label: "Subscription", href: `/${locale}/account/subscription` },
+    { label: "Settings", href: `/${locale}/settings` }
+  ];
+
+  return (
+    <div className="absolute right-0 top-12 w-56 rounded-2xl border border-border bg-surface p-2 shadow-soft">
+      {items.map((item) => (
+        <Link
+          className="focus-ring block rounded-xl px-4 py-3 text-sm font-semibold text-primary transition hover:bg-background"
+          href={item.href}
+          key={item.label}
+          onClick={onClose}
+        >
+          {item.label}
+        </Link>
+      ))}
+      <button
+        className="focus-ring mt-1 block w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-secondary transition hover:bg-background hover:text-primary"
+        onClick={() => void signOut({ callbackUrl: `/${locale}` })}
+        type="button"
+      >
+        Logout
+      </button>
+    </div>
   );
 }
