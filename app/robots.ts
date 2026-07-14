@@ -1,12 +1,13 @@
-import { siteUrl } from "@/lib/site";
+import { siteConfig } from "@/lib/site-config";
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/"
+      allow: "/",
+      disallow: ["/admin", "/en/admin", "/zh/admin", "/api/admin"]
     },
-    sitemap: `${siteUrl}/sitemap.xml`
+    sitemap: `${siteConfig.url}/sitemap.xml`
   };
 }

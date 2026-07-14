@@ -1,23 +1,20 @@
 import "@/styles/globals.css";
 import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
+import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://goai.ai";
+const siteUrl = siteConfig.url;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(siteConfig.url),
   title: "GoAI | Build Your Global Business with AI",
   description:
     "Discover AI tools, proven business playbooks and global market insights to find customers, enter new markets and grow internationally.",
-  alternates: {
-    canonical: "/en"
-  },
   openGraph: {
     title: "GoAI | Build Your Global Business with AI",
     description:
       "Discover AI tools, proven business playbooks and global market insights to find customers, enter new markets and grow internationally.",
-    url: "/en",
     siteName: "GoAI",
     type: "website"
   },

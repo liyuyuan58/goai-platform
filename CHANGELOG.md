@@ -1,5 +1,15 @@
 # Changelog
 
+## Sprint 003 - SEO Domain Hotfix
+
+- Updated the production SEO domain to `https://goaihub.xyz`.
+- Centralized the public site URL through `lib/site-config.ts`.
+- Updated metadata, Open Graph, Twitter Card, canonical and JSON-LD URL generation to use the production domain.
+- Updated `robots.txt` output to reference the production sitemap and disallow admin/API admin paths.
+- Updated sitemap generation to include the root domain and published localized public routes only.
+- Removed public canonical metadata from the Admin CMS page and kept it `noindex`.
+- Updated environment example and public contact email to the GoAI Hub domain.
+
 ## Sprint 002 - Platform Admin CMS
 
 - Upgraded Admin CMS to a dashboard layout with left navigation and right-side module content.

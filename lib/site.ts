@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/i18n";
+import { siteConfig } from "@/lib/site-config";
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://goai.ai";
+export const siteUrl = siteConfig.url;
 
 export type CardItem = {
   title: string;

@@ -90,7 +90,7 @@ export default async function AboutPage({ params }: PageProps) {
             </p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { label: "Email", value: "hello@goai.ai" },
+                { label: "Email", value: "hello@goaihub.xyz" },
                 { label: "LinkedIn", value: "GoAI" },
                 { label: "GitHub", value: "goai-platform" },
                 { label: "X", value: "@goai" }

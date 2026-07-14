@@ -3,7 +3,6 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { getAnalyticsData, getCmsData } from "@/lib/cms-store";
 import type { Locale } from "@/lib/i18n";
-import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 type PageProps = { params: Promise<{ locale: Locale }> };
@@ -16,7 +15,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: "Admin CMS | GoAI",
     description: "GoAI internal content management system.",
-    alternates: { canonical: `${siteUrl}/${locale}/admin` },
     robots: { index: false, follow: false }
   };
 }

@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const aiTools = await getPublishedTools();
   const toolRoutes = aiTools.map((tool) => `/tools/${tool.slug}`);
 
-  return locales.flatMap((locale) =>
+  const localizedRoutes = locales.flatMap((locale) =>
     [...baseRoutes, ...blogRoutes, ...toolRoutes].map((route) => ({
       url: `${siteUrl}/${locale}${route}`,
       lastModified: now,
@@ -18,4 +18,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: route === "" ? 1 : 0.7
     }))
   );
+
+  return [
+    {
+      url: siteUrl,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 1
+    },
+    ...localizedRoutes
+  ];
 }
