@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en">
       <body>
         {children}
+        <AnalyticsTracker />
         <script
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           type="application/ld+json"

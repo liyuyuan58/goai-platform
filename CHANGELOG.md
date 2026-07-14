@@ -1,5 +1,16 @@
 # Changelog
 
+## Sprint 002 - Platform Admin CMS
+
+- Upgraded Admin CMS to a dashboard layout with left navigation and right-side module content.
+- Added Dashboard overview with content totals, published/draft/hidden signals, today's updates and quick actions.
+- Added Analytics dashboard structure with visitors, top pages, top keywords, countries, devices, CTR and impressions placeholders.
+- Added SEO Center structure for sitemap, robots, canonical, schema, Google index, Bing index, broken links and meta management.
+- Added Blog CMS, Resource CMS and Playbook CMS with create, edit, delete, draft, publish, hidden state, tags, category, cover, schedule publish and SEO fields.
+- Expanded AI Tool CMS fields with company, country, founded, founder, screenshots, gallery, tags, use cases, FAQ, integrations, keywords, Open Graph and Twitter Card.
+- Expanded Category CMS with icon, color, description and SEO fields.
+- Added first-party analytics pageview tracking endpoint and client tracker.
+
 ## Sprint 001 - GoAI Admin CMS
 
 - Added `/[locale]/admin` Admin CMS for first-stage tool content management.
