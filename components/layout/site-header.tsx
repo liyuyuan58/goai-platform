@@ -208,7 +208,7 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                   </Link>
                   <Link
                     className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
-                    href={localizedHref("/account/subscription")}
+                    href={localizedHref("/subscription")}
                     onClick={() => setIsOpen(false)}
                   >
                     Subscription
@@ -222,7 +222,9 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                   </Link>
                   <button
                     className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary"
-                    onClick={() => void signOut({ callbackUrl: `/${locale}` })}
+                    onClick={() =>
+                      void signOut({ callbackUrl: `/${locale}`, redirectTo: `/${locale}` })
+                    }
                     type="button"
                   >
                     Logout
@@ -258,12 +260,12 @@ function HeaderContent({ locale }: SiteHeaderProps) {
 function AccountMenu({ locale, onClose }: { locale: Locale; onClose: () => void }) {
   const items = [
     { label: "My Account", href: `/${locale}/account` },
-    { label: "Subscription", href: `/${locale}/account/subscription` },
+    { label: "Subscription", href: `/${locale}/subscription` },
     { label: "Settings", href: `/${locale}/settings` }
   ];
 
   return (
-    <div className="absolute right-0 top-12 w-56 rounded-2xl border border-border bg-surface p-2 shadow-soft">
+    <div className="pointer-events-auto absolute right-0 top-12 z-50 w-56 rounded-2xl border border-border bg-surface p-2 shadow-soft">
       {items.map((item) => (
         <Link
           className="focus-ring block rounded-xl px-4 py-3 text-sm font-semibold text-primary transition hover:bg-background"
@@ -276,7 +278,7 @@ function AccountMenu({ locale, onClose }: { locale: Locale; onClose: () => void 
       ))}
       <button
         className="focus-ring mt-1 block w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-secondary transition hover:bg-background hover:text-primary"
-        onClick={() => void signOut({ callbackUrl: `/${locale}` })}
+        onClick={() => void signOut({ callbackUrl: `/${locale}`, redirectTo: `/${locale}` })}
         type="button"
       >
         Logout

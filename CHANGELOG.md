@@ -6,6 +6,7 @@
 - Added Google provider environment fallbacks for both `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` and `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET`.
 - Hardened Google OAuth environment loading to ignore blank variables and log the sanitized client ID source for Vercel runtime diagnosis.
 - Fixed Google login completion by using Auth.js v5 `redirectTo`, adding a safe redirect callback and sharing the same non-empty session secret with middleware.
+- Fixed account dropdown actions for My Account, Subscription, Settings and Logout, including the `/subscription` route and root redirect.
 - Added a GoAI-styled login modal for Login and Sign Up actions.
 - Added authenticated Header state with avatar menu, My Account, Subscription, Settings and Logout.
 - Added protected routes for Dashboard, Workspace, Account and Settings.

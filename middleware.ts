@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/dashboard", "/workspace", "/account", "/settings"];
+const protectedRoutes = ["/dashboard", "/workspace", "/account", "/subscription", "/settings"];
 const locales = ["en", "zh"];
 
 function getFirstNonEmptyEnv(keys: string[]) {
@@ -72,10 +72,12 @@ export const config = {
     "/dashboard/:path*",
     "/workspace/:path*",
     "/account/:path*",
+    "/subscription/:path*",
     "/settings/:path*",
     "/:locale/dashboard/:path*",
     "/:locale/workspace/:path*",
     "/:locale/account/:path*",
+    "/:locale/subscription/:path*",
     "/:locale/settings/:path*"
   ]
 };
