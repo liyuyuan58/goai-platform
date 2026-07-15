@@ -182,7 +182,7 @@ function WorkspaceDashboard({
           )}
         </WorkspaceCard>
 
-        <WorkspaceCard title="Subscription" action={<CardLink href={`/${locale}/subscription`}>Upgrade</CardLink>}>
+        <WorkspaceCard title="Subscription" action={<CardLink href={`/${locale}/pricing`}>Upgrade</CardLink>}>
           <div className="rounded-2xl border border-border bg-background p-5">
             <p className="text-sm text-secondary">Current Plan</p>
             <p className="mt-2 text-3xl font-semibold text-primary">Free</p>
@@ -283,43 +283,37 @@ function SubscriptionPage({
   locale: Locale;
   session: Session;
 }) {
-  const plans = [
-    { cta: "Current Plan", name: "Free", price: "$0", status: "Active" },
-    { cta: "Upgrade", name: "Pro", price: "Coming Soon", status: "Coming Soon" },
-    { cta: "Contact Sales", name: "Enterprise", price: "Coming Soon", status: "Coming Soon" }
-  ];
+  const user = getCurrentUser(session);
 
   return (
     <AuthenticatedLayout
       active="subscription"
-      description="Review your current GoAI plan and prepare for future paid membership features."
+      description="Review your current plan, usage placeholders and future billing controls."
       locale={locale}
       session={session}
       title="Subscription"
     >
-      <div className="grid gap-5 xl:grid-cols-3">
-        {plans.map((plan) => (
-          <div className="rounded-3xl border border-border bg-surface p-6 shadow-sm" key={plan.name}>
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-semibold text-primary">{plan.name}</h2>
-              <span className="rounded-full bg-background px-3 py-1 text-xs font-semibold text-secondary">
-                {plan.status}
-              </span>
-            </div>
-            <p className="mt-5 text-3xl font-semibold text-primary">{plan.price}</p>
-            <button
-              className={`focus-ring mt-8 inline-flex min-h-11 w-full items-center justify-center rounded-full px-5 text-sm font-semibold transition ${
-                plan.name === "Free"
-                  ? "border border-border bg-white text-secondary"
-                  : "cursor-not-allowed bg-[#EEF2F6] text-secondary"
-              }`}
-              disabled={plan.name !== "Free"}
-              type="button"
-            >
-              {plan.cta}
-            </button>
+      <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
+        <WorkspaceCard title="Current Plan" action={<CardLink href={`/${locale}/pricing`}>Upgrade</CardLink>}>
+          <div className="rounded-2xl border border-border bg-background p-5">
+            <p className="text-sm text-secondary">Current Plan</p>
+            <p className="mt-2 text-4xl font-semibold text-primary">
+              {user.memberPlan.replace(" Plan", "")}
+            </p>
+            <p className="mt-3 text-sm leading-6 text-secondary">
+              Upgrade to unlock unlimited bookmarks, AI playbooks, premium resources and weekly
+              market insights.
+            </p>
           </div>
-        ))}
+        </WorkspaceCard>
+
+        <WorkspaceCard title="Usage">
+          <div className="grid gap-3 text-sm">
+            <InfoRow label="Bookmarks" value="Limited" />
+            <InfoRow label="Saved Tools" value="0" />
+            <InfoRow label="Member Since" value="Today" />
+          </div>
+        </WorkspaceCard>
       </div>
     </AuthenticatedLayout>
   );

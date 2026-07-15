@@ -1,5 +1,15 @@
 # Changelog
 
+## Sprint 007 - Membership & Payment
+
+- Added public Pricing pages at `/pricing` and `/[locale]/pricing` with Free, Pro and Business plan cards.
+- Added Pro upgrade flow that sends authenticated users to `NEXT_PUBLIC_PAYPAL_LINK` and asks unauthenticated visitors to log in first.
+- Added Pricing to the public Header navigation and authenticated user menu.
+- Updated Workspace subscription card to show the current Free plan and link Upgrade to Pricing.
+- Redesigned Subscription with current plan, usage, bookmarks, saved tools and member-since placeholders.
+- Added `NEXT_PUBLIC_PAYPAL_LINK` to the environment example for future PayPal checkout wiring.
+- Added Pricing to sitemap generation.
+
 ## Sprint 006 - Workspace Dashboard
 
 - Added a protected Workspace dashboard at `/[locale]/workspace` with welcome header, account card, recent activity, saved tools, subscription, quick access and latest news sections.

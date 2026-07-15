@@ -18,6 +18,7 @@ const navItems = [
   { label: "Playbooks", href: "/playbooks" },
   { label: "Regions", href: "/regions" },
   { label: "Resources", href: "/resources" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" }
 ];
@@ -208,17 +209,17 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                   </Link>
                   <Link
                     className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
-                    href={localizedHref("/account")}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    My Account
-                  </Link>
-                  <Link
-                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
                     href={localizedHref("/subscription")}
                     onClick={() => setIsOpen(false)}
                   >
                     Subscription
+                  </Link>
+                  <Link
+                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
+                    href={localizedHref("/pricing")}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Pricing
                   </Link>
                   <Link
                     className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
@@ -267,8 +268,8 @@ function HeaderContent({ locale }: SiteHeaderProps) {
 function AccountMenu({ locale, onClose }: { locale: Locale; onClose: () => void }) {
   const items = [
     { label: "Workspace", href: `/${locale}/workspace` },
-    { label: "My Account", href: `/${locale}/account` },
     { label: "Subscription", href: `/${locale}/subscription` },
+    { label: "Pricing", href: `/${locale}/pricing` },
     { label: "Settings", href: `/${locale}/settings` }
   ];
 
