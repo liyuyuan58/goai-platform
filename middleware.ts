@@ -48,9 +48,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const locale = getLocale(request.nextUrl.pathname);
-  const loginUrl = new URL(`/${locale}`, request.url);
-  loginUrl.searchParams.set("login", "1");
+  const loginUrl = new URL("/login", request.url);
   loginUrl.searchParams.set(
     "callbackUrl",
     `${request.nextUrl.pathname}${request.nextUrl.search}`

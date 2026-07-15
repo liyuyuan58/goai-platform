@@ -51,7 +51,7 @@ function HeaderContent({ locale }: SiteHeaderProps) {
       const target =
         callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
           ? callbackUrl
-          : `/${locale}/account`;
+          : `/${locale}/workspace`;
 
       setIsLoginOpen(false);
 
@@ -201,6 +201,13 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                 <div className="grid gap-2">
                   <Link
                     className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
+                    href={localizedHref("/workspace")}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Workspace
+                  </Link>
+                  <Link
+                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
                     href={localizedHref("/account")}
                     onClick={() => setIsOpen(false)}
                   >
@@ -259,6 +266,7 @@ function HeaderContent({ locale }: SiteHeaderProps) {
 
 function AccountMenu({ locale, onClose }: { locale: Locale; onClose: () => void }) {
   const items = [
+    { label: "Workspace", href: `/${locale}/workspace` },
     { label: "My Account", href: `/${locale}/account` },
     { label: "Subscription", href: `/${locale}/subscription` },
     { label: "Settings", href: `/${locale}/settings` }

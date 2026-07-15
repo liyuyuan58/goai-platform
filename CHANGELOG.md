@@ -1,5 +1,16 @@
 # Changelog
 
+## Sprint 006 - Workspace Dashboard
+
+- Added a protected Workspace dashboard at `/[locale]/workspace` with welcome header, account card, recent activity, saved tools, subscription, quick access and latest news sections.
+- Added `AuthenticatedLayout` for logged-in pages with a shared header, desktop sidebar and mobile workspace navigation.
+- Added `workspace-service` data access functions for current user, recent activity, saved tools, latest news and greeting data so future Supabase integration can replace the data source.
+- Upgraded Account, Subscription and Settings screens through the shared protected account page component.
+- Added Workspace to the authenticated Header dropdown and mobile authenticated menu.
+- Updated Google login defaults to send users to `/en/workspace` after successful login.
+- Updated unauthenticated protected-route access to enter through `/login?callbackUrl=...`.
+- Added a `pnpm lint` script for Sprint validation.
+
 ## Sprint 005 - Authentication
 
 - Added Auth.js / NextAuth Google Login with JWT sessions.

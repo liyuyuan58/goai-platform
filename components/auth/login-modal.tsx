@@ -14,7 +14,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const callbackUrl =
     callbackUrlParam?.startsWith("/") && !callbackUrlParam.startsWith("//")
       ? callbackUrlParam
-      : "/en/account";
+      : "/en/workspace";
 
   if (!isOpen) {
     return null;
