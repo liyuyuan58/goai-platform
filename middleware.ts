@@ -5,6 +5,18 @@ import type { NextRequest } from "next/server";
 const protectedRoutes = ["/dashboard", "/workspace", "/account", "/settings"];
 const locales = ["en", "zh"];
 
+function getFirstNonEmptyEnv(keys: string[]) {
+  for (const key of keys) {
+    const value = process.env[key]?.trim();
+
+    if (value) {
+      return value;
+    }
+  }
+
+  return "";
+}
+
 function getProtectedRoute(pathname: string) {
   for (const route of protectedRoutes) {
     if (pathname === route || pathname.startsWith(`${route}/`)) {
@@ -37,7 +49,7 @@ export async function middleware(request: NextRequest) {
 
   const token = await getToken({
     req: request,
-    secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET
+    secret: getFirstNonEmptyEnv(["AUTH_SECRET", "NEXTAUTH_SECRET"])
   });
 
   if (token) {

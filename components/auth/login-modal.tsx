@@ -10,7 +10,11 @@ type LoginModalProps = {
 
 export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/en/account";
+  const callbackUrlParam = searchParams.get("callbackUrl");
+  const callbackUrl =
+    callbackUrlParam?.startsWith("/") && !callbackUrlParam.startsWith("//")
+      ? callbackUrlParam
+      : "/en/account";
 
   if (!isOpen) {
     return null;
@@ -54,7 +58,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
         </p>
         <button
           className="focus-ring mt-7 flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-[#1D4ED8]"
-          onClick={() => void signIn("google", { callbackUrl })}
+          onClick={() => void signIn("google", { callbackUrl, redirectTo: callbackUrl })}
           type="button"
         >
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-bold text-brand">

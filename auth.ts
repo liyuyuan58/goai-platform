@@ -2,14 +2,60 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { getUserByEmail, upsertOAuthUser } from "@/lib/user-store";
 
-const googleClientId = process.env.AUTH_GOOGLE_ID ?? process.env.GOOGLE_CLIENT_ID ?? "";
-const googleClientSecret =
-  process.env.AUTH_GOOGLE_SECRET ?? process.env.GOOGLE_CLIENT_SECRET ?? "";
+function getFirstNonEmptyEnv(keys: string[]) {
+  for (const key of keys) {
+    const value = process.env[key]?.trim();
+
+    if (value) {
+      return { key, value };
+    }
+  }
+
+  return { key: null, value: "" };
+}
+
+const googleClientIdEnv = getFirstNonEmptyEnv([
+  "AUTH_GOOGLE_ID",
+  "GOOGLE_CLIENT_ID"
+]);
+const googleClientSecretEnv = getFirstNonEmptyEnv([
+  "AUTH_GOOGLE_SECRET",
+  "GOOGLE_CLIENT_SECRET"
+]);
+const authSecretEnv = getFirstNonEmptyEnv(["AUTH_SECRET", "NEXTAUTH_SECRET"]);
+const googleClientId = googleClientIdEnv.value;
+const googleClientSecret = googleClientSecretEnv.value;
+const authSecret = authSecretEnv.value;
+
+const googleClientIdLooksValid = googleClientId.endsWith(".apps.googleusercontent.com");
+
+console.info("[auth][config] Google OAuth environment", {
+  authUrl: process.env.AUTH_URL ?? null,
+  clientIdLength: googleClientId.length,
+  clientIdLooksValid: googleClientIdLooksValid,
+  clientIdSource: googleClientIdEnv.key,
+  clientIdSuffix: googleClientId ? googleClientId.slice(-28) : null,
+  hasAuthSecret: Boolean(process.env.AUTH_SECRET?.trim()),
+  hasClientSecret: Boolean(googleClientSecret),
+  hasNextAuthSecret: Boolean(process.env.NEXTAUTH_SECRET?.trim()),
+  nextAuthUrl: process.env.NEXTAUTH_URL ?? null,
+  oauthSecretSource: googleClientSecretEnv.key,
+  sessionSecretSource: authSecretEnv.key
+});
+
+if (!googleClientIdLooksValid) {
+  console.error("[auth][config] Invalid Google OAuth client id", {
+    clientIdLength: googleClientId.length,
+    clientIdSource: googleClientIdEnv.key,
+    expectedSuffix: ".apps.googleusercontent.com"
+  });
+}
 
 export const { handlers, auth } = NextAuth({
   pages: {
     signIn: "/en?login=1"
   },
+  secret: authSecret,
   providers: [
     Google({
       clientId: googleClientId,
@@ -34,6 +80,23 @@ export const { handlers, auth } = NextAuth({
     }
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      const target = new URL(url, baseUrl);
+
+      if (target.origin !== baseUrl) {
+        return `${baseUrl}/en`;
+      }
+
+      if (target.searchParams.get("login") === "1") {
+        const callbackUrl = target.searchParams.get("callbackUrl");
+
+        if (callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")) {
+          return `${baseUrl}${callbackUrl}`;
+        }
+      }
+
+      return target.toString();
+    },
     async signIn({ account, profile, user }) {
       if (account?.provider !== "google" || !user.email) {
         console.error("[auth][signIn] Missing Google account or user email", {

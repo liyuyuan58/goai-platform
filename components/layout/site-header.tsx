@@ -5,7 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 type SiteHeaderProps = {
@@ -35,6 +35,8 @@ function HeaderContent({ locale }: SiteHeaderProps) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { data: session, status } = useSession();
+  const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isAuthenticated = status === "authenticated";
   const user = session?.user;
@@ -42,10 +44,28 @@ function HeaderContent({ locale }: SiteHeaderProps) {
   const localizedHref = (href: string) => `/${locale}${href}`;
 
   useEffect(() => {
-    if (searchParams.get("login") === "1" && !isAuthenticated) {
+    const shouldLogin = searchParams.get("login") === "1";
+    const callbackUrl = searchParams.get("callbackUrl");
+
+    if (shouldLogin && isAuthenticated) {
+      const target =
+        callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+          ? callbackUrl
+          : `/${locale}/account`;
+
+      setIsLoginOpen(false);
+
+      if (pathname !== target) {
+        router.replace(target);
+      }
+
+      return;
+    }
+
+    if (shouldLogin && !isAuthenticated) {
       setIsLoginOpen(true);
     }
-  }, [isAuthenticated, searchParams]);
+  }, [isAuthenticated, locale, pathname, router, searchParams]);
 
   const openLogin = () => {
     setIsOpen(false);
