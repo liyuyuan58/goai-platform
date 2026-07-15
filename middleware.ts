@@ -1,21 +1,14 @@
-import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const protectedRoutes = ["/dashboard", "/workspace", "/account", "/subscription", "/settings"];
 const locales = ["en", "zh"];
-
-function getFirstNonEmptyEnv(keys: string[]) {
-  for (const key of keys) {
-    const value = process.env[key]?.trim();
-
-    if (value) {
-      return value;
-    }
-  }
-
-  return "";
-}
+const sessionCookieNames = [
+  "authjs.session-token",
+  "__Secure-authjs.session-token",
+  "next-auth.session-token",
+  "__Secure-next-auth.session-token"
+];
 
 function getProtectedRoute(pathname: string) {
   for (const route of protectedRoutes) {
@@ -40,19 +33,18 @@ function getLocale(pathname: string) {
   return locales.includes(segment) ? segment : "en";
 }
 
-export async function middleware(request: NextRequest) {
+function hasSessionCookie(request: NextRequest) {
+  return sessionCookieNames.some((name) => Boolean(request.cookies.get(name)?.value));
+}
+
+export function middleware(request: NextRequest) {
   const protectedRoute = getProtectedRoute(request.nextUrl.pathname);
 
   if (!protectedRoute) {
     return NextResponse.next();
   }
 
-  const token = await getToken({
-    req: request,
-    secret: getFirstNonEmptyEnv(["AUTH_SECRET", "NEXTAUTH_SECRET"])
-  });
-
-  if (token) {
+  if (hasSessionCookie(request)) {
     return NextResponse.next();
   }
 

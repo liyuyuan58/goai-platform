@@ -1,3 +1,5 @@
+"use client";
+
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import type { Locale } from "@/lib/i18n";
@@ -9,7 +11,7 @@ type AccountShellProps = {
   title: string;
   description: string;
   locale: Locale;
-  session: Session;
+  session: Session | null;
   children?: ReactNode;
 };
 
@@ -38,7 +40,7 @@ export function AccountShell({
           <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
             <aside className="rounded-3xl border border-border bg-surface p-6 shadow-sm">
               <div className="flex items-center gap-4">
-                {session.user.image ? (
+                {session?.user.image ? (
                   <img
                     alt={session.user.name ?? "GoAI user"}
                     className="h-14 w-14 rounded-full object-cover"
@@ -46,18 +48,18 @@ export function AccountShell({
                   />
                 ) : (
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-lg font-bold text-white">
-                    {session.user.name?.charAt(0) ?? "G"}
+                    {session?.user.name?.charAt(0) ?? "G"}
                   </div>
                 )}
                 <div>
-                  <p className="font-semibold text-primary">{session.user.name}</p>
-                  <p className="text-sm text-secondary">{session.user.email}</p>
+                  <p className="font-semibold text-primary">{session?.user.name ?? "GoAI User"}</p>
+                  <p className="text-sm text-secondary">{session?.user.email ?? "Checking session"}</p>
                 </div>
               </div>
               <div className="mt-6 grid gap-3 border-t border-border pt-5 text-sm">
-                <InfoRow label="Role" value={session.user.role} />
-                <InfoRow label="Plan" value={session.user.plan} />
-                <InfoRow label="Provider" value={session.user.provider} />
+                <InfoRow label="Role" value={session?.user.role ?? "user"} />
+                <InfoRow label="Plan" value={session?.user.plan ?? "free"} />
+                <InfoRow label="Provider" value={session?.user.provider ?? "google"} />
               </div>
             </aside>
             <section className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
