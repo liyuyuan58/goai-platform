@@ -3,11 +3,15 @@
 ## Sprint 005 - Authentication
 
 - Added Auth.js / NextAuth Google Login with JWT sessions.
+- Added Google provider environment fallbacks for both `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` and `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET`.
 - Added a GoAI-styled login modal for Login and Sign Up actions.
 - Added authenticated Header state with avatar menu, My Account, Subscription, Settings and Logout.
 - Added protected routes for Dashboard, Workspace, Account and Settings.
 - Added middleware redirects for unauthenticated access to protected routes.
+- Added `/login`, `/account`, `/workspace`, `/dashboard` and `/settings` root redirects for production verification.
 - Added local user store fields for Google users: id, email, name, avatar, provider, role, plan, created_at and updated_at.
+- Updated user persistence to avoid writing to Vercel's read-only runtime.
+- Updated internal analytics endpoint to avoid writing local files in Vercel while keeping GA4 collection unaffected.
 - Added authentication environment variables for Google OAuth and Auth.js.
 
 ## Sprint 004 - Google Analytics 4

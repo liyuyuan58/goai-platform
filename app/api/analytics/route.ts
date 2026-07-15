@@ -1,14 +1,14 @@
-import { trackPageView } from "@/lib/cms-store";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as { pathname?: string };
-  const pathname = body.pathname?.startsWith("/") ? body.pathname : "/";
-  await trackPageView(pathname);
+  try {
+    await request.json();
+  } catch {
+    // Ignore malformed analytics payloads. GA4 remains the source of truth for production analytics.
+  }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, persisted: false });
 }
-

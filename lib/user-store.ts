@@ -26,17 +26,36 @@ type OAuthUserInput = {
 };
 
 const usersFile = path.join(process.cwd(), "data", "users.json");
+let userCache: StoredUser[] = [];
+
+function isReadOnlyRuntime() {
+  return Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
+}
 
 async function readUsers(): Promise<UserStore> {
+  if (userCache.length > 0) {
+    return { users: userCache };
+  }
+
   try {
     const content = await readFile(usersFile, "utf8");
-    return JSON.parse(content) as UserStore;
-  } catch {
+    const data = JSON.parse(content) as UserStore;
+    userCache = data.users ?? [];
+    return { users: userCache };
+  } catch (error) {
+    console.warn("[user-store] Falling back to in-memory users", error);
     return { users: [] };
   }
 }
 
 async function writeUsers(data: UserStore) {
+  userCache = data.users;
+
+  if (isReadOnlyRuntime()) {
+    console.info("[user-store] Skipped file persistence in read-only runtime");
+    return;
+  }
+
   await mkdir(path.dirname(usersFile), { recursive: true });
   await writeFile(usersFile, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
