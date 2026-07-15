@@ -1,6 +1,7 @@
 "use client";
 
 import { LoginModal } from "@/components/auth/login-modal";
+import { trackEvent } from "@/lib/analytics-events";
 import type { Locale } from "@/lib/i18n";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -107,6 +108,7 @@ function HeaderContent({ locale }: SiteHeaderProps) {
           <Link
             className="focus-ring rounded-md text-sm font-semibold text-secondary transition hover:text-primary"
             href={`/${locale}`}
+            onClick={() => trackEvent("language_switch", { locale })}
           >
             EN
           </Link>

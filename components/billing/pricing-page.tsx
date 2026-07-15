@@ -2,6 +2,7 @@
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { trackEvent } from "@/lib/analytics-events";
 import type { Locale } from "@/lib/i18n";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -57,7 +58,10 @@ export function PricingPage({ locale }: PricingPageProps) {
   const isAuthenticated = status === "authenticated";
 
   const handleUpgrade = () => {
+    trackEvent("upgrade_click", { plan: "pro", source: "pricing" });
+
     if (!isAuthenticated) {
+      trackEvent("pricing_click", { action: "login_required", plan: "pro" });
       window.alert("Please login first.");
       void signIn("google", {
         callbackUrl: `/${locale}/workspace`,
@@ -67,6 +71,7 @@ export function PricingPage({ locale }: PricingPageProps) {
     }
 
     if (paypalLink) {
+      trackEvent("pricing_click", { action: "paypal_redirect", plan: "pro" });
       window.location.href = paypalLink;
       return;
     }

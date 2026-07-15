@@ -3,7 +3,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { NewsletterCta } from "@/components/sections/homepage-v2-sections";
 import { ButtonLink } from "@/components/ui/button-link";
 import type { Locale } from "@/lib/i18n";
-import { siteUrl } from "@/lib/site";
+import { createSeoMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
 type PageProps = { params: Promise<{ locale: Locale }> };
@@ -13,13 +13,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description =
     "Learn what GoAI is, why it exists and how it helps businesses grow globally with AI.";
 
-  return {
-    title: "About | GoAI",
+  return createSeoMetadata({
+    canonicalPath: `/${locale}/about`,
     description,
-    alternates: { canonical: `${siteUrl}/${locale}/about` },
-    openGraph: { title: "About | GoAI", description, url: `/${locale}/about`, type: "website" },
-    twitter: { card: "summary_large_image", title: "About | GoAI", description }
-  };
+    keywords: ["GoAI", "AI for global business", "contact GoAI"],
+    locale,
+    title: "About | GoAI"
+  });
 }
 
 export default async function AboutPage({ params }: PageProps) {
@@ -90,10 +90,10 @@ export default async function AboutPage({ params }: PageProps) {
             </p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { label: "Email", value: "hello@goaihub.xyz" },
-                { label: "LinkedIn", value: "GoAI" },
-                { label: "GitHub", value: "goai-platform" },
-                { label: "X", value: "@goai" }
+                { label: "Contact", value: "hello@goaihub.xyz" },
+                { label: "Feedback", value: "Share product ideas and launch feedback." },
+                { label: "Suggest Tool", value: "Recommend an AI tool for the GoAI directory." },
+                { label: "Business Inquiry", value: "Partnerships, media and commercial questions." }
               ].map((item) => (
                 <div
                   className="rounded-2xl border border-border bg-background p-4"
@@ -114,6 +114,12 @@ export default async function AboutPage({ params }: PageProps) {
         </section>
         <section className="sr-only" id="terms-of-service">
           Terms of Service
+        </section>
+        <section className="sr-only" id="cookie-policy">
+          Cookie Policy
+        </section>
+        <section className="sr-only" id="suggest-tool">
+          Suggest Tool
         </section>
         <NewsletterCta />
       </main>

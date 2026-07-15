@@ -1,5 +1,17 @@
 # Changelog
 
+## Sprint 008 - Launch Ready
+
+- Added launch-ready SEO metadata helpers with canonical URLs, alternate languages, Open Graph images, Twitter cards, authors and keywords.
+- Added Google Search Console verification environment support.
+- Added Organization/WebSite SearchAction JSON-LD, Blog Article/Breadcrumb/FAQ JSON-LD and Pricing Product/Offer JSON-LD.
+- Updated robots.txt, sitemap generation, manifest, theme color and RSS feed.
+- Added Microsoft Clarity support through `NEXT_PUBLIC_CLARITY_PROJECT_ID`.
+- Added GA4 custom events for login, signup, pricing clicks, upgrade clicks, newsletter signup and language switching.
+- Added loading skeletons, 404 actions and 500/global error pages.
+- Expanded Footer with newsletter, Privacy Policy, Terms of Service, Cookie Policy, Contact, Suggest Tool and social links.
+- Expanded Contact section with Contact, Feedback, Suggest Tool and Business Inquiry entries.
+
 ## Sprint 007 - Membership & Payment
 
 - Added public Pricing pages at `/pricing` and `/[locale]/pricing` with Free, Pro and Business plan cards.

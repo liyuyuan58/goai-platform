@@ -2,7 +2,8 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { NewsletterCta } from "@/components/sections/homepage-v2-sections";
 import type { Locale } from "@/lib/i18n";
-import { blogPosts, siteUrl } from "@/lib/site";
+import { createSeoMetadata } from "@/lib/seo";
+import { blogPosts } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,13 +13,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const description = "Read GoAI notes about AI tools, playbooks and global business growth.";
 
-  return {
-    title: "Blog | GoAI",
+  return createSeoMetadata({
+    canonicalPath: `/${locale}/blog`,
     description,
-    alternates: { canonical: `${siteUrl}/${locale}/blog` },
-    openGraph: { title: "Blog | GoAI", description, url: `/${locale}/blog`, type: "website" },
-    twitter: { card: "summary_large_image", title: "Blog | GoAI", description }
-  };
+    keywords: ["GoAI blog", "AI business", "global growth"],
+    locale,
+    title: "Blog | GoAI"
+  });
 }
 
 export default async function BlogPage({ params }: PageProps) {

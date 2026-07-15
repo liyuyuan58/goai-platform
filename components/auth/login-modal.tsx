@@ -1,5 +1,6 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics-events";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
@@ -58,7 +59,11 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
         </p>
         <button
           className="focus-ring mt-7 flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-[#1D4ED8]"
-          onClick={() => void signIn("google", { callbackUrl, redirectTo: callbackUrl })}
+          onClick={() => {
+            trackEvent("login", { provider: "google" });
+            trackEvent("signup", { provider: "google", source: "login_modal" });
+            void signIn("google", { callbackUrl, redirectTo: callbackUrl });
+          }}
           type="button"
         >
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-bold text-brand">

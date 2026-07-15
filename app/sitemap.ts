@@ -5,7 +5,14 @@ import type { MetadataRoute } from "next";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const locales = ["en", "zh"];
-  const baseRoutes = ["", ...Object.keys(pageContent).map((slug) => `/${slug}`), "/about", "/blog", "/pricing"];
+  const baseRoutes = [
+    "",
+    ...Object.keys(pageContent).map((slug) => `/${slug}`),
+    "/about",
+    "/blog",
+    "/pricing",
+    "/account"
+  ];
   const blogRoutes = blogPosts.map((post) => `/blog/${post.slug}`);
   const aiTools = await getPublishedTools();
   const toolRoutes = aiTools.map((tool) => `/tools/${tool.slug}`);

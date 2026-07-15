@@ -1,5 +1,6 @@
 import { PricingPage } from "@/components/billing/pricing-page";
 import type { Locale } from "@/lib/i18n";
+import { createSeoMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
@@ -10,16 +11,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description =
     "Compare GoAI Free, Pro and Business plans for AI tools, playbooks, premium resources and global market insights.";
 
-  return {
-    title: "Pricing | GoAI",
+  return createSeoMetadata({
+    canonicalPath: `/${locale}/pricing`,
     description,
-    alternates: { canonical: `${siteUrl}/${locale}/pricing` },
-    openGraph: { title: "Pricing | GoAI", description, url: `/${locale}/pricing`, type: "website" },
-    twitter: { card: "summary_large_image", title: "Pricing | GoAI", description }
-  };
+    keywords: ["GoAI pricing", "AI tools pricing", "AI business membership"],
+    locale,
+    title: "Pricing | GoAI"
+  });
 }
 
 export default async function PricingRoute({ params }: PageProps) {
   const { locale } = await params;
-  return <PricingPage locale={locale} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "GoAI Membership",
+    description:
+      "GoAI plans for AI tools, playbooks, premium resources and global market insights.",
+    brand: { "@type": "Brand", name: "GoAI" },
+    offers: [
+      { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD", url: `${siteUrl}/${locale}/pricing` },
+      { "@type": "Offer", name: "Pro", price: "19", priceCurrency: "USD", url: `${siteUrl}/${locale}/pricing` },
+      { "@type": "Offer", name: "Business", price: "99", priceCurrency: "USD", url: `${siteUrl}/${locale}/pricing` }
+    ]
+  };
+
+  return (
+    <>
+      <PricingPage locale={locale} />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+    </>
+  );
 }

@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/i18n";
+import { NewsletterForm } from "@/components/ui/newsletter-form";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,21 +12,24 @@ const footerGroups = [
     title: "GoAI",
     links: [
       { label: "About", href: "/about" },
-      { label: "Resources", href: "/resources" }
+      { label: "Resources", href: "/resources" },
+      { label: "Pricing", href: "/pricing" }
     ]
   },
   {
     title: "Content",
     links: [
       { label: "Blog", href: "/blog" },
-      { label: "Contact", href: "/about#contact" }
+      { label: "Contact", href: "/about#contact" },
+      { label: "Suggest Tool", href: "/about#suggest-tool" }
     ]
   },
   {
     title: "Legal",
     links: [
       { label: "Privacy Policy", href: "/about#privacy-policy" },
-      { label: "Terms of Service", href: "/about#terms-of-service" }
+      { label: "Terms of Service", href: "/about#terms-of-service" },
+      { label: "Cookie Policy", href: "/about#cookie-policy" }
     ]
   }
 ];
@@ -53,6 +57,12 @@ export function SiteFooter({ locale }: SiteFooterProps) {
               Empowering every business to grow globally with AI.
             </p>
             <p className="mt-4 text-sm font-semibold text-brand">Go Global with AI.</p>
+            <div className="mt-7 max-w-md">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-primary">
+                Join GoAI Newsletter
+              </h2>
+              <NewsletterForm tone="light" />
+            </div>
           </div>
           <div className="grid gap-8 sm:grid-cols-3">
             {footerGroups.map((group) => (
@@ -77,8 +87,12 @@ export function SiteFooter({ locale }: SiteFooterProps) {
           </div>
         </div>
         <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-sm text-secondary sm:flex-row sm:items-center sm:justify-between">
-          <p>(c) 2026 GoAI. All rights reserved.</p>
-          <p>Built for global business teams.</p>
+          <p>Copyright (c) 2026 GoAI. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a className="hover:text-primary" href="https://x.com" rel="noreferrer" target="_blank">Twitter</a>
+            <a className="hover:text-primary" href="https://linkedin.com" rel="noreferrer" target="_blank">LinkedIn</a>
+            <a className="hover:text-primary" href="https://youtube.com" rel="noreferrer" target="_blank">YouTube</a>
+          </div>
         </div>
       </div>
     </footer>

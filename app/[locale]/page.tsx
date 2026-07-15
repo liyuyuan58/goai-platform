@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { getHomepageFeaturedTools } from "@/lib/cms-store";
 import type { Locale } from "@/lib/i18n";
-import { siteUrl } from "@/lib/site";
+import { createSeoMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
 type HomePageProps = {
@@ -19,23 +19,13 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
   const description =
     "Discover AI tools, proven business playbooks and global market insights to find customers, enter new markets and grow internationally.";
 
-  return {
-    title,
+  return createSeoMetadata({
+    canonicalPath: `/${locale}`,
     description,
-    alternates: { canonical: `${siteUrl}/${locale}` },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}/${locale}`,
-      siteName: "GoAI",
-      type: "website"
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description
-    }
-  };
+    keywords: ["GoAI", "AI tools", "global business", "AI playbooks", "global markets"],
+    locale,
+    title,
+  });
 }
 
 export default async function HomePage({ params }: HomePageProps) {

@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { ToolsDirectory } from "@/components/tools/tools-directory";
 import { getCmsData } from "@/lib/cms-store";
 import type { Locale } from "@/lib/i18n";
+import { createSeoMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
@@ -16,18 +17,13 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
 
-  return {
-    title,
+  return createSeoMetadata({
+    canonicalPath: `/${locale}/tools`,
     description,
-    alternates: { canonical: `${siteUrl}/${locale}/tools` },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}/${locale}/tools`,
-      type: "website"
-    },
-    twitter: { card: "summary_large_image", title, description }
-  };
+    keywords: ["AI tools", "AI directory", "global business AI"],
+    locale,
+    title,
+  });
 }
 
 export default async function ToolsPage({ params }: PageProps) {

@@ -2,6 +2,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { NewsletterCta } from "@/components/sections/homepage-v2-sections";
 import type { Locale } from "@/lib/i18n";
+import { createSeoMetadata } from "@/lib/seo";
 import { blogPosts, siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -23,18 +24,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
-  return {
-    title: `${post.title} | GoAI`,
+  return createSeoMetadata({
+    canonicalPath: `/${locale}/blog/${post.slug}`,
     description: post.description,
-    alternates: { canonical: `${siteUrl}/${locale}/blog/${post.slug}` },
-    openGraph: {
-      title: `${post.title} | GoAI`,
-      description: post.description,
-      url: `/${locale}/blog/${post.slug}`,
-      type: "article"
-    },
-    twitter: { card: "summary_large_image", title: `${post.title} | GoAI`, description: post.description }
-  };
+    keywords: ["AI", "global business", "GoAI"],
+    locale,
+    publishedTime: post.date,
+    title: `${post.title} | GoAI`,
+    type: "article",
+    updatedTime: post.date
+  });
 }
 
 export default async function BlogDetailPage({ params }: PageProps) {
@@ -44,6 +43,48 @@ export default async function BlogDetailPage({ params }: PageProps) {
   if (!post) {
     notFound();
   }
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: post.title,
+        description: post.description,
+        author: { "@type": "Organization", name: "GoAI" },
+        publisher: {
+          "@type": "Organization",
+          name: "GoAI",
+          logo: { "@type": "ImageObject", url: `${siteUrl}/brand/logo-primary.svg` }
+        },
+        datePublished: post.date,
+        dateModified: post.date,
+        inLanguage: locale,
+        mainEntityOfPage: `${siteUrl}/${locale}/blog/${post.slug}`
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/${locale}` },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${siteUrl}/${locale}/blog` },
+          { "@type": "ListItem", position: 3, name: post.title, item: `${siteUrl}/${locale}/blog/${post.slug}` }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "How can AI help businesses go global?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "AI can support market research, localization, customer discovery and repeatable growth operations."
+            }
+          }
+        ]
+      }
+    ]
+  };
 
   return (
     <>
@@ -78,6 +119,10 @@ export default async function BlogDetailPage({ params }: PageProps) {
         <NewsletterCta />
       </main>
       <SiteFooter locale={locale} />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        type="application/ld+json"
+      />
     </>
   );
 }
