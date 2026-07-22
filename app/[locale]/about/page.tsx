@@ -2,9 +2,11 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { NewsletterCta } from "@/components/sections/homepage-v2-sections";
 import { ButtonLink } from "@/components/ui/button-link";
+import { founderContact } from "@/lib/contact-config";
 import type { Locale } from "@/lib/i18n";
 import { createSeoMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
+import Image from "next/image";
 
 type PageProps = { params: Promise<{ locale: Locale }> };
 
@@ -77,7 +79,90 @@ export default async function AboutPage({ params }: PageProps) {
           </div>
         </section>
         <section className="border-b border-border py-16 sm:py-20" id="contact">
-          <div className="container-page rounded-[2rem] border border-border bg-surface p-8 shadow-sm sm:p-10">
+          <div className="container-page">
+            <div className="mb-5 rounded-[2rem] border border-border bg-surface p-8 shadow-sm sm:p-10">
+              <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+                    Founder Contact
+                  </p>
+                  <h2 className="mt-3 text-3xl font-semibold text-primary">
+                    Contact the Founder
+                  </h2>
+                  <p className="mt-4 max-w-2xl whitespace-pre-line text-base leading-7 text-secondary">
+                    Have a question, partnership opportunity, or feedback?{"\n"}Feel free to
+                    reach out. I'd be happy to connect.
+                  </p>
+
+                  <div className="mt-7 rounded-3xl border border-border bg-background p-5">
+                    <p className="text-xl font-semibold text-primary">{founderContact.name}</p>
+                    <p className="mt-1 text-sm font-semibold text-brand">{founderContact.title}</p>
+                    <p className="mt-4 text-sm leading-6 text-secondary">
+                      {founderContact.mission}
+                    </p>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-3xl border border-border bg-background p-5">
+                      <p className="text-sm font-semibold text-primary">📧 Email</p>
+                      <a
+                        className="focus-ring mt-3 inline-flex rounded-md text-sm font-semibold text-brand transition hover:text-primary"
+                        href={`mailto:${founderContact.email}`}
+                      >
+                        {founderContact.email}
+                      </a>
+                    </div>
+                    <div className="rounded-3xl border border-border bg-background p-5">
+                      <p className="text-sm font-semibold text-primary">💬 WeChat</p>
+                      <p className="mt-3 text-sm text-secondary">WeChat ID:</p>
+                      <p className="mt-1 text-sm font-semibold text-primary">
+                        {founderContact.wechatId}
+                      </p>
+                      <p className="mt-4 text-sm leading-6 text-secondary">
+                        {founderContact.wechatDescription}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <aside className="rounded-[2rem] border border-border bg-background p-6 text-center">
+                  <div className="mx-auto w-full max-w-[220px] rounded-3xl border border-border bg-white p-4 shadow-sm">
+                    <Image
+                      alt={`WeChat QR code for ${founderContact.name}`}
+                      className="h-auto w-full"
+                      height={220}
+                      src={founderContact.wechatQrCode}
+                      width={220}
+                    />
+                  </div>
+                  <p className="mt-4 text-sm font-semibold text-primary">
+                    Scan to connect on WeChat
+                  </p>
+
+                  <div className="mt-7 text-left">
+                    <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-primary">
+                      Business Inquiries
+                    </h3>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {founderContact.businessAreas.map((area) => (
+                        <span
+                          className="rounded-full border border-border bg-white px-3 py-1.5 text-sm font-semibold text-secondary"
+                          key={area}
+                        >
+                          {area}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="mt-7 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-secondary">
+                    {founderContact.responseTime}
+                  </p>
+                </aside>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-border bg-surface p-8 shadow-sm sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
               Contact
             </p>
@@ -106,6 +191,7 @@ export default async function AboutPage({ params }: PageProps) {
             </div>
             <div className="mt-7">
               <ButtonLink href={`/${locale}/resources`}>Explore resources</ButtonLink>
+            </div>
             </div>
           </div>
         </section>

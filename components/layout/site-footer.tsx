@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 import { NewsletterForm } from "@/components/ui/newsletter-form";
+import { founderContact } from "@/lib/contact-config";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -62,6 +63,26 @@ export function SiteFooter({ locale }: SiteFooterProps) {
                 Join GoAI Newsletter
               </h2>
               <NewsletterForm tone="light" />
+            </div>
+            <div className="mt-7 rounded-2xl border border-border bg-background p-5">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-primary">
+                Contact
+              </h2>
+              <div className="mt-4 grid gap-3 text-sm">
+                <div>
+                  <p className="font-semibold text-primary">Email</p>
+                  <a
+                    className="mt-1 inline-flex rounded-md text-secondary transition hover:text-brand"
+                    href={`mailto:${founderContact.email}`}
+                  >
+                    {founderContact.email}
+                  </a>
+                </div>
+                <div>
+                  <p className="font-semibold text-primary">WeChat</p>
+                  <p className="mt-1 text-secondary">{founderContact.wechatId}</p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="grid gap-8 sm:grid-cols-3">

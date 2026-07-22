@@ -1,5 +1,12 @@
 # Changelog
 
+## Launch Patch 001 - Founder Contact
+
+- Added configurable founder contact information through `lib/contact-config.ts`.
+- Added a Founder Contact card on the About page with email, WeChat ID, QR code area, business inquiry areas and response time.
+- Added footer contact details for founder email and WeChat.
+- Added a replaceable WeChat QR code asset at `public/contact/wechat-qr.svg`.
+
 ## Sprint 008 - Launch Ready
 
 - Added launch-ready SEO metadata helpers with canonical URLs, alternate languages, Open Graph images, Twitter cards, authors and keywords.
