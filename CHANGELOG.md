@@ -59,6 +59,12 @@
 - Updated internal analytics endpoint to avoid writing local files in Vercel while keeping GA4 collection unaffected.
 - Added authentication environment variables for Google OAuth and Auth.js.
 
+## Launch Patch 001.1 - Founder QR Visibility
+
+- Made the founder WeChat QR code visible in the global footer contact card.
+- Corrected the About page Founder Contact QR image dimensions to match the real uploaded image ratio.
+- Kept founder contact details centralized in `lib/contact-config.ts`.
+
 ## Sprint 004 - Google Analytics 4
 
 - Added GA4 measurement ID `G-N41JNP1RTP` through `@next/third-parties/google`.

@@ -130,7 +130,8 @@ export default async function AboutPage({ params }: PageProps) {
                     <Image
                       alt={`WeChat QR code for ${founderContact.name}`}
                       className="h-auto w-full"
-                      height={220}
+                      height={347}
+                      sizes="(max-width: 640px) 70vw, 220px"
                       src={founderContact.wechatQrCode}
                       width={220}
                     />

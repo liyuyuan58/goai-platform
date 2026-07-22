@@ -81,6 +81,19 @@ export function SiteFooter({ locale }: SiteFooterProps) {
                 <div>
                   <p className="font-semibold text-primary">WeChat</p>
                   <p className="mt-1 text-secondary">{founderContact.wechatId}</p>
+                  <div className="mt-4 w-28 rounded-2xl border border-border bg-white p-2 shadow-sm">
+                    <Image
+                      alt={`WeChat QR code for ${founderContact.name}`}
+                      className="h-auto w-full rounded-xl"
+                      height={176}
+                      sizes="112px"
+                      src={founderContact.wechatQrCode}
+                      width={112}
+                    />
+                  </div>
+                  <p className="mt-2 text-xs font-medium text-secondary">
+                    Scan to connect on WeChat
+                  </p>
                 </div>
               </div>
             </div>
