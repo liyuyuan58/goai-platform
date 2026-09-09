@@ -9,7 +9,7 @@ export async function GET() {
 
   try {
     const plans = await supabaseServerRequest<any[]>(
-      `growth_plans?user_email=eq.${encodeURIComponent(session.user.email)}&select=id,title,target_country,opportunity_score,created_at&order=created_at.desc&limit=20`
+      `growth_plans?user_email=eq.${encodeURIComponent(session.user.email)}&select=id,title,company_name,current_country,target_country,opportunity_score,created_at&order=created_at.desc&limit=20`
     );
     return NextResponse.json({ plans, configured: true });
   } catch (error) {

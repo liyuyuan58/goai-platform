@@ -6,7 +6,14 @@ import type { Session } from "next-auth";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type AuthenticatedSection = "account" | "activity" | "settings" | "subscription" | "tools" | "workspace";
+type AuthenticatedSection =
+  | "account"
+  | "activity"
+  | "growth-plans"
+  | "settings"
+  | "subscription"
+  | "tools"
+  | "workspace";
 
 type AuthenticatedLayoutProps = {
   active: AuthenticatedSection;
@@ -19,6 +26,7 @@ type AuthenticatedLayoutProps = {
 
 const sidebarItems = [
   { key: "workspace", label: "Dashboard", href: "/workspace" },
+  { key: "growth-plans", label: "My Growth Plans", href: "/workspace/growth-plans" },
   { key: "tools", label: "Saved Tools", href: "/workspace#saved-tools" },
   { key: "activity", label: "Activity", href: "/workspace#activity" },
   { key: "subscription", label: "Subscription", href: "/subscription" },
