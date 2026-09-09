@@ -21,8 +21,6 @@ export function GrowthCopilot({ locale }: { locale: Locale }) {
   const [input, setInput] = useState<GrowthPlanInput>(emptyInput);
   const [plan, setPlan] = useState<GrowthPlan | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const { status: sessionStatus } = useSession();
 
   function update<K extends keyof GrowthPlanInput>(key: K, value: GrowthPlanInput[K]) {
     setInput((current) => ({ ...current, [key]: value }));
@@ -103,6 +101,9 @@ function Field({ children, label }: { children: React.ReactNode; label: string }
 }
 
 function GrowthPlanReport({ locale, plan, onBack }: { locale: Locale; plan: GrowthPlan; onBack: () => void }) {
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const { status: sessionStatus } = useSession();
+
   return (
     <div>
       <div className="mb-6 flex flex-col gap-4 rounded-[2rem] border border-border bg-surface p-6 shadow-sm sm:p-8 lg:flex-row lg:items-end lg:justify-between">
@@ -139,7 +140,7 @@ function GrowthPlanReport({ locale, plan, onBack }: { locale: Locale; plan: Grow
               setSaveStatus("saving");
               const response = await fetch("/api/growth-plans", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ plan }) });
               setSaveStatus(response.ok ? "saved" : "error");
-            }} type="button">{saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? "Saved" : "Save Growth Plan"}</button>
+            }} type="button">{saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? "Saved" : saveStatus === "error" ? "Try Again" : "Save Growth Plan"}</button>
           ) : (
             <Link className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 text-sm font-semibold text-white" href={`/${locale}?login=1&callbackUrl=${encodeURIComponent(`/${locale}/growth`)}`}>Sign in to save</Link>
           )}
