@@ -4,6 +4,7 @@ import { demoGrowthPlanInput, buildDemoGrowthPlan, type GrowthPlan, type GrowthP
 import type { Locale } from "@/lib/i18n";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const emptyInput: GrowthPlanInput = {
   companyName: "",
@@ -20,6 +21,8 @@ export function GrowthCopilot({ locale }: { locale: Locale }) {
   const [input, setInput] = useState<GrowthPlanInput>(emptyInput);
   const [plan, setPlan] = useState<GrowthPlan | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const { status: sessionStatus } = useSession();
 
   function update<K extends keyof GrowthPlanInput>(key: K, value: GrowthPlanInput[K]) {
     setInput((current) => ({ ...current, [key]: value }));
@@ -129,8 +132,19 @@ function GrowthPlanReport({ locale, plan, onBack }: { locale: Locale; plan: Grow
       </div>
 
       <div className="mt-6 flex flex-col gap-3 rounded-3xl border border-brand/20 bg-brand/5 p-5 sm:flex-row sm:items-center sm:justify-between">
-        <div><p className="font-semibold text-primary">Ready to keep working on this market?</p><p className="mt-1 text-sm text-secondary">Supabase persistence is the next step. For now, open your existing Workspace.</p></div>
-        <Link className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 text-sm font-semibold text-white" href={`/${locale}/workspace`}>Open Workspace</Link>
+        <div><p className="font-semibold text-primary">Save this plan to your Workspace</p><p className="mt-1 text-sm text-secondary">Signed-in users can persist Growth Plans in Supabase and reopen them later.</p></div>
+        <div className="flex flex-wrap gap-2">
+          {sessionStatus === "authenticated" ? (
+            <button className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 text-sm font-semibold text-white disabled:opacity-60" disabled={saveStatus === "saving" || saveStatus === "saved"} onClick={async () => {
+              setSaveStatus("saving");
+              const response = await fetch("/api/growth-plans", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ plan }) });
+              setSaveStatus(response.ok ? "saved" : "error");
+            }} type="button">{saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? "Saved" : "Save Growth Plan"}</button>
+          ) : (
+            <Link className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 text-sm font-semibold text-white" href={`/${locale}?login=1&callbackUrl=${encodeURIComponent(`/${locale}/growth`)}`}>Sign in to save</Link>
+          )}
+          <Link className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-white px-5 text-sm font-semibold text-primary" href={`/${locale}/workspace`}>Open Workspace</Link>
+        </div>
       </div>
     </div>
   );
