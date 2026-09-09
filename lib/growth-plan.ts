@@ -11,6 +11,7 @@ export type GrowthPlanInput = {
 
 export type GrowthPlan = {
   id: string;
+  input: GrowthPlanInput;
   title: string;
   targetMarket: string;
   opportunityScore: number;
@@ -43,6 +44,7 @@ export function buildDemoGrowthPlan(input: GrowthPlanInput): GrowthPlan {
 
   return {
     id: "demo-uae-furniture",
+    input: { ...input },
     title: `${target} Market Entry Plan`,
     targetMarket: target,
     opportunityScore: 8.2,
@@ -93,21 +95,9 @@ export function buildDemoGrowthPlan(input: GrowthPlanInput): GrowthPlan {
       "Validate pricing against landed cost and local service expectations."
     ],
     actionPlan: [
-      {
-        phase: "Validate",
-        days: "Days 1-30",
-        actions: ["Map 100 target companies", "Benchmark local pricing", "Prepare UAE sales assets", "Contact first 30 partners"]
-      },
-      {
-        phase: "Acquire",
-        days: "Days 31-60",
-        actions: ["Run partner interviews", "Launch targeted outbound", "Attend one relevant industry event", "Test 2-3 commercial offers"]
-      },
-      {
-        phase: "Scale",
-        days: "Days 61-90",
-        actions: ["Select priority channel partners", "Launch a pilot project", "Publish a local case study", "Decide whether local presence is justified"]
-      }
+      { phase: "Validate", days: "Days 1-30", actions: ["Map 100 target companies", "Benchmark local pricing", "Prepare UAE sales assets", "Contact first 30 partners"] },
+      { phase: "Acquire", days: "Days 31-60", actions: ["Run partner interviews", "Launch targeted outbound", "Attend one relevant industry event", "Test 2-3 commercial offers"] },
+      { phase: "Scale", days: "Days 61-90", actions: ["Select priority channel partners", "Launch a pilot project", "Publish a local case study", "Decide whether local presence is justified"] }
     ]
   };
 }
