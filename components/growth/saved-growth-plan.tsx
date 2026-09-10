@@ -1,6 +1,7 @@
 "use client";
 
 import { AuthenticatedLayout } from "@/components/auth/authenticated-layout";
+import { RecommendedAiTools } from "@/components/growth/recommended-ai-tools";
 import type { GrowthPlan } from "@/lib/growth-plan";
 import type { Locale } from "@/lib/i18n";
 import { useSession } from "next-auth/react";
@@ -34,21 +35,17 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
 
   useEffect(() => {
     if (status !== "authenticated") return;
-
     let cancelled = false;
 
     async function loadPlan() {
       try {
         const response = await fetch(`/api/growth-plans/${encodeURIComponent(id)}`, { cache: "no-store" });
-
         if (response.status === 404) {
           if (!cancelled) setLoadStatus("missing");
           return;
         }
-
         if (!response.ok) throw new Error(`Request failed: ${response.status}`);
         const data = await response.json();
-
         if (!cancelled) {
           setRecord(data.plan ?? null);
           setLoadStatus(data.plan ? "ready" : "missing");
@@ -60,23 +57,14 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
     }
 
     loadPlan();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [id, status]);
 
-  if (status === "loading" || !session?.user) {
-    return <LoadingScreen text="Preparing your saved Growth Plan..." />;
-  }
+  if (status === "loading" || !session?.user) return <LoadingScreen text="Preparing your saved Growth Plan..." />;
 
   if (loadStatus === "loading") {
     return (
-      <AuthenticatedLayout
-        active="growth-plans"
-        locale={locale}
-        session={session}
-        title="Loading Growth Plan"
-      >
+      <AuthenticatedLayout active="growth-plans" locale={locale} session={session} title="Loading Growth Plan">
         <PlanMessage title="Loading your saved plan..." body="Fetching the latest saved version from your workspace." />
       </AuthenticatedLayout>
     );
@@ -84,12 +72,7 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
 
   if (loadStatus === "missing" || !record) {
     return (
-      <AuthenticatedLayout
-        active="growth-plans"
-        locale={locale}
-        session={session}
-        title="Growth Plan"
-      >
+      <AuthenticatedLayout active="growth-plans" locale={locale} session={session} title="Growth Plan">
         <PlanMessage
           title="Growth Plan not found."
           body="This plan may have been removed or it does not belong to the signed-in account."
@@ -101,12 +84,7 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
 
   if (loadStatus === "error") {
     return (
-      <AuthenticatedLayout
-        active="growth-plans"
-        locale={locale}
-        session={session}
-        title="Growth Plan"
-      >
+      <AuthenticatedLayout active="growth-plans" locale={locale} session={session} title="Growth Plan">
         <PlanMessage
           title="Unable to load this Growth Plan."
           body="Refresh the page or return to your workspace and try again."
@@ -137,10 +115,7 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
         </div>
         <div className="flex flex-wrap gap-2">
           <LinkButton href={`/${locale}/workspace/growth-plans`}>My Growth Plans</LinkButton>
-          <Link
-            className="focus-ring inline-flex min-h-10 items-center justify-center rounded-full bg-brand px-4 text-sm font-semibold text-white"
-            href={`/${locale}/growth`}
-          >
+          <Link className="focus-ring inline-flex min-h-10 items-center justify-center rounded-full bg-brand px-4 text-sm font-semibold text-white" href={`/${locale}/growth`}>
             Build New Plan
           </Link>
         </div>
@@ -157,17 +132,13 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
 
         <ReportSection index="03" title="Target Customers">
           <div className="grid gap-3 sm:grid-cols-2">
-            {plan.targetCustomers.map((item) => (
-              <InfoBlock body={item.rationale} key={item.name} title={item.name} />
-            ))}
+            {plan.targetCustomers.map((item) => <InfoBlock body={item.rationale} key={item.name} title={item.name} />)}
           </div>
         </ReportSection>
 
         <ReportSection index="04" title="Competitor Intelligence">
           <div className="grid gap-3 sm:grid-cols-3">
-            {plan.competitors.map((item) => (
-              <InfoBlock body={item.insight} key={item.segment} title={item.segment} />
-            ))}
+            {plan.competitors.map((item) => <InfoBlock body={item.insight} key={item.segment} title={item.segment} />)}
           </div>
         </ReportSection>
 
@@ -178,17 +149,12 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
         <ReportSection index="06" title="Customer Acquisition">
           <div className="grid gap-3">
             {plan.customerAcquisition.map((item) => (
-              <div
-                className="grid gap-3 rounded-2xl border border-border bg-background p-4 sm:grid-cols-[1fr_auto] sm:items-center"
-                key={item.channel}
-              >
+              <div className="grid gap-3 rounded-2xl border border-border bg-background p-4 sm:grid-cols-[1fr_auto] sm:items-center" key={item.channel}>
                 <div>
                   <p className="font-semibold text-primary">{item.channel}</p>
                   <p className="mt-1 text-sm leading-6 text-secondary">{item.note}</p>
                 </div>
-                <span className="w-fit rounded-full border border-border bg-white px-3 py-1 text-xs font-semibold text-brand">
-                  {item.priority}
-                </span>
+                <span className="w-fit rounded-full border border-border bg-white px-3 py-1 text-xs font-semibold text-brand">{item.priority}</span>
               </div>
             ))}
           </div>
@@ -200,9 +166,7 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
 
         <ReportSection index="08" title="Your AI Growth Stack">
           <div className="grid gap-3 sm:grid-cols-2">
-            {plan.aiStack.map((item) => (
-              <InfoBlock body={item.tools} key={item.job} title={item.job} />
-            ))}
+            {plan.aiStack.map((item) => <InfoBlock body={item.tools} key={item.job} title={item.job} />)}
           </div>
         </ReportSection>
 
@@ -216,13 +180,13 @@ export function SavedGrowthPlan({ id, locale }: { id: string; locale: Locale }) 
               <div className="rounded-3xl border border-border bg-background p-5" key={phase.phase}>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand">{phase.days}</p>
                 <h3 className="mt-2 text-xl font-semibold text-primary">{phase.phase}</h3>
-                <div className="mt-4">
-                  <BulletList items={phase.actions} />
-                </div>
+                <div className="mt-4"><BulletList items={phase.actions} /></div>
               </div>
             ))}
           </div>
         </ReportSection>
+
+        <RecommendedAiTools plan={plan} locale={locale} />
       </div>
     </AuthenticatedLayout>
   );
@@ -240,15 +204,7 @@ function LoadingScreen({ text }: { text: string }) {
   );
 }
 
-function PlanMessage({
-  action,
-  body,
-  title
-}: {
-  action?: ReactNode;
-  body: string;
-  title: string;
-}) {
+function PlanMessage({ action, body, title }: { action?: ReactNode; body: string; title: string }) {
   return (
     <div className="rounded-3xl border border-border bg-surface p-6 shadow-sm">
       <h2 className="text-xl font-semibold text-primary">{title}</h2>
@@ -269,21 +225,11 @@ function LinkButton({ children, href }: { children: ReactNode; href: string }) {
   );
 }
 
-function ReportSection({
-  children,
-  index,
-  title
-}: {
-  children: ReactNode;
-  index: string;
-  title: string;
-}) {
+function ReportSection({ children, index, title }: { children: ReactNode; index: string; title: string }) {
   return (
     <section className="rounded-[2rem] border border-border bg-surface p-6 shadow-sm sm:p-8">
       <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-sm font-bold text-brand">
-          {index}
-        </span>
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-sm font-bold text-brand">{index}</span>
         <h2 className="text-xl font-semibold text-primary sm:text-2xl">{title}</h2>
       </div>
       {children}
