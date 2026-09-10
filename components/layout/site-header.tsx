@@ -9,18 +9,16 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-type SiteHeaderProps = {
-  locale: Locale;
-};
+type SiteHeaderProps = { locale: Locale };
 
 const navItems = [
   { label: "Solutions", href: "/solutions" },
   { label: "AI Tools", href: "/tools" },
   { label: "Playbooks", href: "/playbooks" },
   { label: "Regions", href: "/regions" },
-  { label: "Resources", href: "/resources" },
+  { label: "Insights", href: "/insights" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Blog", href: "/blog" },
+  { label: "Enterprise", href: "/enterprise/forward-deployed-ai" },
   { label: "About", href: "/about" }
 ];
 
@@ -42,7 +40,6 @@ function HeaderContent({ locale }: SiteHeaderProps) {
   const searchParams = useSearchParams();
   const isAuthenticated = status === "authenticated";
   const user = session?.user;
-
   const localizedHref = (href: string) => `/${locale}${href}`;
 
   useEffect(() => {
@@ -54,19 +51,12 @@ function HeaderContent({ locale }: SiteHeaderProps) {
         callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
           ? callbackUrl
           : `/${locale}/workspace`;
-
       setIsLoginOpen(false);
-
-      if (pathname !== target) {
-        router.replace(target);
-      }
-
+      if (pathname !== target) router.replace(target);
       return;
     }
 
-    if (shouldLogin && !isAuthenticated) {
-      setIsLoginOpen(true);
-    }
+    if (shouldLogin && !isAuthenticated) setIsLoginOpen(true);
   }, [isAuthenticated, locale, pathname, router, searchParams]);
 
   const openLogin = () => {
@@ -77,22 +67,11 @@ function HeaderContent({ locale }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-white/90 shadow-[0_1px_0_rgba(15,23,42,0.02)] backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <Link
-          aria-label="GoAI home"
-          className="focus-ring inline-flex items-center rounded-md"
-          href={`/${locale}`}
-        >
-          <Image
-            alt="GoAI"
-            className="h-9 w-auto"
-            height={64}
-            priority
-            src="/brand/logo-primary.svg"
-            width={220}
-          />
+        <Link aria-label="GoAI home" className="focus-ring inline-flex items-center rounded-md" href={`/${locale}`}>
+          <Image alt="GoAI" className="h-9 w-auto" height={64} priority src="/brand/logo-primary.svg" width={220} />
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Primary navigation" className="hidden items-center gap-6 lg:flex">
           {navItems.map((item) => (
             <Link
               className="focus-ring rounded-md text-sm font-medium text-secondary transition hover:text-primary"
@@ -112,6 +91,7 @@ function HeaderContent({ locale }: SiteHeaderProps) {
           >
             EN
           </Link>
+
           {isAuthenticated ? (
             <div className="relative">
               <button
@@ -121,11 +101,7 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                 type="button"
               >
                 {user?.image ? (
-                  <img
-                    alt={user.name ?? "GoAI user"}
-                    className="h-8 w-8 rounded-full object-cover"
-                    src={user.image}
-                  />
+                  <img alt={user.name ?? "GoAI user"} className="h-8 w-8 rounded-full object-cover" src={user.image} />
                 ) : (
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
                     {user?.name?.charAt(0) ?? "G"}
@@ -133,27 +109,14 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                 )}
                 <span aria-hidden="true">⌄</span>
               </button>
-              {isAccountOpen ? (
-                <AccountMenu
-                  locale={locale}
-                  onClose={() => setIsAccountOpen(false)}
-                />
-              ) : null}
+              {isAccountOpen ? <AccountMenu locale={locale} onClose={() => setIsAccountOpen(false)} /> : null}
             </div>
           ) : (
             <>
-              <button
-                className="focus-ring rounded-md text-sm font-semibold text-secondary transition hover:text-primary"
-                onClick={openLogin}
-                type="button"
-              >
+              <button className="focus-ring rounded-md text-sm font-semibold text-secondary" onClick={openLogin} type="button">
                 Login
               </button>
-              <button
-                className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
-                onClick={openLogin}
-                type="button"
-              >
+              <button className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white" onClick={openLogin} type="button">
                 Sign Up
               </button>
             </>
@@ -192,76 +155,31 @@ function HeaderContent({ locale }: SiteHeaderProps) {
                 </Link>
               ))}
             </div>
+
             <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
-              <Link
-                className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-secondary"
-                href={`/${locale}`}
-                onClick={() => setIsOpen(false)}
-              >
+              <Link className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-secondary" href={`/${locale}`} onClick={() => setIsOpen(false)}>
                 EN
               </Link>
+
               {isAuthenticated ? (
                 <div className="grid gap-2">
-                  <Link
-                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
-                    href={localizedHref("/workspace")}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Workspace
-                  </Link>
-                  <Link
-                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
-                    href={localizedHref("/subscription")}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Subscription
-                  </Link>
-                  <Link
-                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
-                    href={localizedHref("/pricing")}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Pricing
-                  </Link>
-                  <Link
-                    className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary"
-                    href={localizedHref("/settings")}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Settings
-                  </Link>
-                  <button
-                    className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary"
-                    onClick={() =>
-                      void signOut({ callbackUrl: `/${locale}`, redirectTo: `/${locale}` })
-                    }
-                    type="button"
-                  >
-                    Logout
-                  </button>
+                  <Link className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary" href={localizedHref("/workspace")} onClick={() => setIsOpen(false)}>Workspace</Link>
+                  <Link className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary" href={localizedHref("/subscription")} onClick={() => setIsOpen(false)}>Subscription</Link>
+                  <Link className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary" href={localizedHref("/pricing")} onClick={() => setIsOpen(false)}>Pricing</Link>
+                  <Link className="focus-ring rounded-lg px-2 py-2 text-sm font-semibold text-primary" href={localizedHref("/settings")} onClick={() => setIsOpen(false)}>Settings</Link>
+                  <button className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary" onClick={() => void signOut({ callbackUrl: `/${locale}`, redirectTo: `/${locale}` })} type="button">Logout</button>
                 </div>
               ) : (
                 <div className="grid gap-2">
-                  <button
-                    className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary"
-                    onClick={openLogin}
-                    type="button"
-                  >
-                    Login
-                  </button>
-                  <button
-                    className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
-                    onClick={openLogin}
-                    type="button"
-                  >
-                    Sign Up
-                  </button>
+                  <button className="focus-ring rounded-lg px-2 py-2 text-left text-sm font-semibold text-secondary" onClick={openLogin} type="button">Login</button>
+                  <button className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white" onClick={openLogin} type="button">Sign Up</button>
                 </div>
               )}
             </div>
           </nav>
         </div>
       ) : null}
+
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </header>
   );
