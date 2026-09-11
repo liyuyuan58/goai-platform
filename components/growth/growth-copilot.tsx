@@ -2,6 +2,7 @@
 import { demoGrowthPlanInput, buildDemoGrowthPlan, type GrowthPlan, type GrowthPlanInput } from "@/lib/growth-plan";
 import { RecommendedAiTools } from "@/components/growth/recommended-ai-tools";
 import { GrowthAgentPanel } from "@/components/growth/growth-agent-panel";
+import { MarketResearchExecution } from "@/components/growth/market-research-execution";
 import type { Locale } from "@/lib/i18n";
 import Link from "next/link";
 import { FormEvent, ReactNode, useState } from "react";
@@ -55,6 +56,7 @@ function Report({locale,plan,mode,back}:{locale:Locale;plan:GrowthPlan;mode:"liv
   <div className="grid gap-5">{blocks.map(([n,t,c])=><section className="rounded-[2rem] border border-border bg-surface p-6 shadow-sm sm:p-8" key={n}><div className="mb-5 flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-sm font-bold text-brand">{n}</span><h2 className="text-xl font-semibold sm:text-2xl">{t}</h2></div>{c}</section>)}</div>
   <div className="mt-6"><RecommendedAiTools plan={plan} locale={locale} /></div>
   <div className="mt-6"><GrowthAgentPanel plan={plan} /></div>
+  <div className="mt-6"><MarketResearchExecution plan={plan} /></div>
   <div className="mt-6 flex flex-col gap-3 rounded-3xl border border-brand/20 bg-brand/5 p-5 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-semibold">Save this plan to your Workspace</p><p className="mt-1 text-sm text-secondary">Keep it in My Growth Plans and reopen it later.</p></div><div className="flex gap-2">{status==="authenticated"?<button className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white" disabled={save==="saving"||save==="saved"} onClick={async()=>{setSave("saving");const r=await fetch("/api/growth-plans",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({plan})});setSave(r.ok?"saved":"error")}}>{save==="saving"?"Saving...":save==="saved"?"Saved":save==="error"?"Try Again":"Save Growth Plan"}</button>:<Link className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white" href={`/${locale}?login=1&callbackUrl=${encodeURIComponent(`/${locale}/growth`)}`}>Sign in to save</Link>}<Link className="rounded-full border border-border bg-white px-5 py-3 text-sm font-semibold" href={`/${locale}/workspace/growth-plans`}>My Growth Plans</Link></div></div>
  </div>
 }
